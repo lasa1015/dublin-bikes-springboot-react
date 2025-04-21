@@ -23,7 +23,7 @@ public class DbbikesApplication {
 
 		System.setProperty("openweather.api.key", dotenv.get("OPENWEATHER_API_KEY"));
 
-
+		System.setProperty("jcdecaux.api.key", dotenv.get("JCDECAUX_API_KEY"));
 		SpringApplication.run(DbbikesApplication.class, args);
 	}
 

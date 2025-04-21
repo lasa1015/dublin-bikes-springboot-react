@@ -51,6 +51,8 @@ public class CurrentAirQualityScheduler {
             airQualityRepository.deleteAll(); // 清空旧数据，保证只保留最新一条
             airQualityRepository.save(aq);
 
+            System.out.println("✅air quality数据已经存入数据库");
+
         } catch (Exception e) {
             System.err.println("Error fetching air quality: " + e.getMessage());
         }

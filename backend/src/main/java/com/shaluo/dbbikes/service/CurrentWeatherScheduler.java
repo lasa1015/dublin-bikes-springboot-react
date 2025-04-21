@@ -59,5 +59,7 @@ public class CurrentWeatherScheduler {
 
         weatherRepository.deleteAll(); // 删除旧记录
         weatherRepository.save(weather);
+
+        System.out.println("✅current weather 数据已经存入数据库");
     }
 }

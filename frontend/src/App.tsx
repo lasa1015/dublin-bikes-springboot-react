@@ -39,14 +39,33 @@ interface WeatherForecast {
   weatherIcon: string;
 }
 
+interface CurrentStation {
+  number: number;
+  status: string;
+  latitude: number;
+  longitude: number;
+  availableBikes: number;
+  availableBikeStands: number;
+  capacity: number;
+}
+
+
 
 function App() {
   const [airQuality, setAirQuality] = useState<AirQuality | null>(null);
   const [weather, setWeather] = useState<CurrentWeather | null>(null);
   const [forecastList, setForecastList] = useState<WeatherForecast[]>([]);
+  const [stations, setStations] = useState<CurrentStation[]>([]);
+
 
 
   useEffect(() => {
+
+    fetch('/api/current-bike/all')
+    .then(res => res.json())
+    .then(setStations)
+    .catch(err => console.error('获取自行车数据失败:', err));
+
     fetch('/api/current-weather-forecast/all')
   .then(res => res.json())
   .then(setForecastList)
@@ -114,7 +133,7 @@ function App() {
   <h2>未来天气预报</h2>
   {forecastList.length > 0 ? (
     <div>
-      {forecastList.slice(0, 10).map(forecast => (
+      {forecastList.slice(0, 5).map(forecast => (
         <div key={forecast.id} style={{ borderBottom: '1px solid #ccc', padding: '0.5rem 0' }}>
           <p><strong>时间：</strong>{new Date(forecast.forecastTime).toLocaleString()}</p>
           <p><strong>天气：</strong>{forecast.weatherMain}（{forecast.weatherDescription}）</p>
@@ -132,6 +151,28 @@ function App() {
     <p>正在加载天气预报数据...</p>
   )}
 </section>
+
+{/* 自行车可用情况模块 */}
+<section style={{ background: '#e8f5e9', padding: '1rem', borderRadius: '10px', marginTop: '2rem' }}>
+  <h2>自行车站点（前10个）</h2>
+  {stations.length > 0 ? (
+    <div>
+      {stations.slice(0, 5).map(station => (
+        <div key={station.number} style={{ borderBottom: '1px solid #ccc', padding: '0.5rem 0' }}>
+          <p><strong>站点编号：</strong>{station.number}</p>
+          <p><strong>状态：</strong>{station.status}</p>
+          <p><strong>位置：</strong>经度 {station.longitude}, 纬度 {station.latitude}</p>
+          <p><strong>可用自行车：</strong>{station.availableBikes}</p>
+          <p><strong>可用车位：</strong>{station.availableBikeStands}</p>
+          <p><strong>站点容量：</strong>{station.capacity}</p>
+        </div>
+      ))}
+    </div>
+  ) : (
+    <p>正在加载自行车站点数据...</p>
+  )}
+</section>
+
 
     </div>
   );

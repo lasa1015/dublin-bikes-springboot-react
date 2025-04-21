@@ -13,14 +13,14 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class WeatherForecastScheduler {
+public class CurrentWeatherForecastScheduler {
 
     @Value("${openweather.api.key}")
     private String apiKey;
 
     private final CurrentWeatherForecastRepository forecastRepository;
 
-    public WeatherForecastScheduler(CurrentWeatherForecastRepository forecastRepository) {
+    public CurrentWeatherForecastScheduler(CurrentWeatherForecastRepository forecastRepository) {
         this.forecastRepository = forecastRepository;
     }
 
@@ -71,7 +71,10 @@ public class WeatherForecastScheduler {
             forecast.setRecordedAt(LocalDateTime.now());
 
             forecastRepository.save(forecast);
+
         }
+
+        System.out.println("✅current weather forecast 数据已经存入数据库");
     }
 
 }
