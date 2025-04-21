@@ -27,7 +27,12 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 25px;
+
+  /* ✅ 关键提升层级，允许弹出层不被遮盖 */
+  position: relative;
+  z-index: 9999;
 }
+
 
 #journey_planner input[type="text"] {
   flex-grow: 1;
@@ -35,11 +40,15 @@
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 3px;
+
+  /* ✅ 重要：确保下拉不会被裁切 */
+  position: relative;
+  z-index: 9999;
 }
 
 #journey_planner #search_btn {
-  margin-left: 6px;
-  padding: 6px 12px;
+  margin-left: 0px;
+  padding: 9px 8px;
   font-size: 14px;
   background-color: #5ec7b3;
   color: white;

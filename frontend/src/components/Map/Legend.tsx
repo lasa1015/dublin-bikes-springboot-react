@@ -20,10 +20,10 @@ export default function Legend() {
         fontFamily: 'Arial, sans-serif',
       }}
     >
-      <LegendItem color="#4caf50" label="n > 15" />
-      <LegendItem color="#ff9800" label="n > 7" />
-      <LegendItem color="#f44336" label="n > 1" />
-      <LegendItem color="#000000" label="n = 0" />
+      <LegendItem color="#4caf50" label="n >= 15" />
+      <LegendItem color="#ff9800" label="n >= 7" />
+      <LegendItem color="#f44336" label="n >= 1" />
+      <LegendItem color="#000000" label="n  = 0" />
     </div>
   );
 }
