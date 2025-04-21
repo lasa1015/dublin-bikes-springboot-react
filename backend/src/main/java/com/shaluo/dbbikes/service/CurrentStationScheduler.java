@@ -26,7 +26,7 @@ public class CurrentStationScheduler {
     }
 
     @Scheduled(fixedRate = 1800000) // 每 30 分钟抓一次（单位：毫秒）
-    public void fetchBikeData() {
+    public void fetchStationData() {
         String url = "https://api.jcdecaux.com/vls/v3/stations?contract=Dublin&apiKey=" + apiKey;
 
         RestTemplate restTemplate = new RestTemplate();
@@ -42,7 +42,9 @@ public class CurrentStationScheduler {
             bike.setNumber(((Number) station.get("number")).intValue());
             bike.setStatus((String) station.get("status"));
 
-
+            bike.setName((String) station.get("name"));
+            bike.setAddress((String) station.get("address"));
+            bike.setContractName((String) station.get("contractName"));
 
 
             bike.setConnected((Boolean) station.get("connected"));

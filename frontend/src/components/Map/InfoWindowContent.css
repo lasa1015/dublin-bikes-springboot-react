@@ -1,0 +1,62 @@
+#stand_info {
+  margin: 0px 5px 5px 5px;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  min-width: 220px;
+}
+
+#stand_info h2 {
+  color: #e6713f;
+  font-size: 16px;
+  margin-bottom: 26px;
+  margin-top: 6px;
+}
+
+#stand_info h4 {
+  color: #007159;
+  font-size: 13px;
+  margin: 0px 0px 20px 0px;
+  font-weight: bold;
+}
+
+#stand_info img {
+  vertical-align: middle;
+  margin-left: 5px;
+  height: 20px;
+  width: 20px;
+}
+
+#ml_prediction_btn {
+  margin-top: 12px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 4px;
+  color: #000;
+  /* font-weight: bold; */
+  background: linear-gradient(
+    to right,
+    rgba(255, 94, 98, 0.7),
+    rgba(255, 153, 102, 0.7)
+  );
+  border: 1px solid rgba(211, 211, 211, 0.6);
+  width: 100%;
+ 
+}
+
+#ml_prediction_btn:hover {
+  background: linear-gradient(
+    to right,
+    rgba(234, 47, 51, 0.7),
+    rgba(245, 117, 52, 0.7)
+  );
+}
+#stand_info div {
+  margin-bottom: 0px; /* 行距（你可以改成 6px 或 8px 更宽松） */
+  line-height: 1.2;
+}
+
+#stand_info .value {
+  font-weight: normal;
+  font-size: 14px;
+  margin-left: 4px;
+}

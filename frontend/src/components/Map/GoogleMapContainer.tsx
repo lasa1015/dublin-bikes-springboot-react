@@ -1,10 +1,11 @@
 import { GoogleMap, useLoadScript } from '@react-google-maps/api';
-import { ReactNode } from 'react';
-import StationMarkers from './StationMarkers'; // 加这一行
+import StationMarkers from './StationMarkers';
+import useStations from '../../hooks/useStations';
+import WeatherPanel from '../Weather/WeatherPanel';
 
 const mapContainerStyle = {
   width: '100%',
-  height: 'calc(100vh - 60px)', // 避免滚动条
+  height: '100vh',
 };
 
 const center = {
@@ -14,11 +15,9 @@ const center = {
 
 const libraries: ("places" | "geometry")[] = ['places', 'geometry'];
 
-interface Props {
-  children?: ReactNode;
-}
+const GoogleMapContainer = () => {
+  const stations = useStations(); // ✅ 使用自定义 Hook 获取数据
 
-const GoogleMapContainer = ({ children }: Props) => {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY!,
     libraries,
@@ -28,6 +27,8 @@ const GoogleMapContainer = ({ children }: Props) => {
   if (!isLoaded) return <div>地图加载中...</div>;
 
   return (
+    <>
+    <WeatherPanel />
     <GoogleMap
       mapContainerStyle={mapContainerStyle}
       zoom={14}
@@ -35,6 +36,8 @@ const GoogleMapContainer = ({ children }: Props) => {
       options={{
         disableDefaultUI: true,
         zoomControl: true,
+        gestureHandling: 'greedy', 
+        clickableIcons: false,  
         styles: [
           {
             featureType: 'poi',
@@ -49,10 +52,10 @@ const GoogleMapContainer = ({ children }: Props) => {
         ],
       }}
     >
-      {/* 显示站点标记 */}
-      <StationMarkers />
-      {children}
+      <StationMarkers stations={stations} />
     </GoogleMap>
+    
+    </>
   );
 };
 
