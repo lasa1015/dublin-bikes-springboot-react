@@ -26,21 +26,35 @@ const WeatherForecastPanel = ({ onClose }: { onClose: () => void }) => {
 
   const baseOptions = {
     legend: 'none',
-    curveType: 'function',
+    curveType: 'none',
     lineWidth: 2,
-    pointSize: 3, // 不显示圆点
+    pointSize: 4,
     hAxis: {
       textStyle: { fontSize: 11 },
-      gridlines: { count: 4 },
+      gridlines: {
+        color: '#cccccc', // 横线颜色
+        count: 4,
+      },
     },
     vAxis: {
       textStyle: { fontSize: 12 },
-      gridlines: { count: 5 },
+      gridlines: {
+        color: '#cccccc', // 竖线颜色
+        count: 5,
+      },
     },
     chartArea: {
       width: '88%',
-      height: '75%',
+      height: '70%',
+      top: 40, 
     },
+    titleTextStyle: {
+      fontSize: 16,     // ✅ 标题字体更大
+    
+      bold: true,
+      color: '#333',
+    },
+    backgroundColor: 'transparent',  // ✅ 背景透明（可根据需要换为白色）
   };
   
 
@@ -65,7 +79,7 @@ const WeatherForecastPanel = ({ onClose }: { onClose: () => void }) => {
           chartType="LineChart"
           data={tempChartData}
           width="100%"
-          height="200px"
+          height="250px"
           options={{
             ...baseOptions,
             title: 'Temperature (°C)',
@@ -79,7 +93,7 @@ const WeatherForecastPanel = ({ onClose }: { onClose: () => void }) => {
           chartType="LineChart"
           data={windChartData}
           width="100%"
-          height="200px"
+          height="250px"
           options={{
             ...baseOptions,
             title: 'Wind Speed (m/s)',
