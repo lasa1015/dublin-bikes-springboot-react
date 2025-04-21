@@ -20,7 +20,7 @@ const StationMarkers = ({ stations }: Props) => {
             url: selectedStation?.number === station.number
               ? '/img/bikeicon_active.png'
               : '/img/bikeicon.png',
-            scaledSize: new window.google.maps.Size(30, 41),
+            scaledSize: new window.google.maps.Size(32, 43),
           }}
           onClick={() => setSelectedStation(station)}
         />
