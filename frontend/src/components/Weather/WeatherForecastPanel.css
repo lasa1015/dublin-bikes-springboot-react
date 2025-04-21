@@ -1,0 +1,51 @@
+#weather_more {
+  position: absolute;
+  top: 76px;
+  left: 15px;
+  width: 390px;
+  height: auto;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 1);
+  box-shadow: 5px 0px 10px rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+  z-index: 100;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.close {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  cursor: pointer;
+  font-size: 22px;
+  color: rgb(64, 64, 64);
+  border: none;
+  padding: 0px 6px;
+}
+
+#weather_condition {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  margin: 10px 0 25px 0;
+  height: 65px;
+  overflow-x: auto;
+  padding-left: 5px;
+}
+
+.forecast_icon {
+  text-align: center;
+  margin-right: 4px;
+  font-size: 12px;
+}
+
+.forecast_icon img {
+  height: 43px;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+#weather_temperature,
+#weather_wind {
+  margin-top: 15px;
+  margin-bottom: 20px;
+}
