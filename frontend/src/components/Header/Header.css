@@ -1,0 +1,17 @@
+/* src/components/Header/Header.css */
+
+#header {
+  background-image: url("/img/bg.jpg");
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+#header img {
+  width: 380px;
+}
