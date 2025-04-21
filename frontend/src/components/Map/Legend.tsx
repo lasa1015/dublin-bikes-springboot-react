@@ -4,7 +4,7 @@ export default function Legend() {
     <div
       style={{
         position: 'absolute',
-        top: '160px',
+        top: '130px',
         right: '60px',
         width: '70px',
         background: 'rgba(255, 255, 255, 0.6)',

@@ -10,22 +10,22 @@ interface Props {
 export default function JourneyPlanner({ onLocationSelect }: Props) {
   const stations = useStations();
 
+  /* ---------- 路线 context ---------- */
   const {
     departureNumber,
     arrivalNumber,
     setDepartureNumber,
     setArrivalNumber,
-    fireRoute,          // ⬅️ 新增
+    fireRoute,
+    clearAll,               // ✨ 新增
   } = useRoute();
 
-  /* ---------- 自动补全 ---------- */
+  /* ---------- gmp‑autocomplete ---------- */
   const [selectedPlace, setSelectedPlace] =
     useState<google.maps.places.PlaceResult | null>(null);
-  const acRef = useRef<HTMLInputElement>(null);
-
   useEffect(() => {
     const el = document.querySelector('gmp-place-autocomplete');
-    const handle = async (e: any) => {
+    const handler = async (e: any) => {
       const place = await e.detail.place;
       setSelectedPlace(place);
       place.geometry?.location &&
@@ -34,8 +34,8 @@ export default function JourneyPlanner({ onLocationSelect }: Props) {
           lng: place.geometry.location.lng(),
         });
     };
-    el?.addEventListener('placechange', handle);
-    return () => el?.removeEventListener('placechange', handle);
+    el?.addEventListener('placechange', handler);
+    return () => el?.removeEventListener('placechange', handler);
   }, [onLocationSelect]);
 
   const handleSearchClick = () => {
@@ -46,22 +46,23 @@ export default function JourneyPlanner({ onLocationSelect }: Props) {
       });
   };
 
-  /* ---------- “GO” 按钮 ---------- */
+  /* ---------- GO / CLEAR ---------- */
   const handleGoClick = () => {
-    const dep = stations.find(s => s.number === departureNumber);
-    const arr = stations.find(s => s.number === arrivalNumber);
-    if (!dep || !arr) return;          // 没选全，什么也不做
-    fireRoute();                       // 只是触发，让地图去真正请求路径
+    if (!departureNumber || !arrivalNumber) return;
+    /* 重复站点已在地图层 effect 中排除，这里只负责触发 */
+    fireRoute();
   };
 
+  const handleClearClick = () => clearAll();   // 一键清空
+
+  /* ---------- UI ---------- */
   return (
     <div id="journey_planner">
       <img id="title" src="/img/title.png" alt="logo" />
 
-      {/* 搜索框 + Search 按钮 */}
-      <div id="search_wrapper" style={{ zIndex: 9999, display: 'flex', gap: 6 }}>
+      {/* 搜索框 + Search */}
+      {/* <div id="search_wrapper" style={{ zIndex: 9999, display: 'flex', gap: 6 }}>
         <gmp-place-autocomplete
-          ref={acRef}
           style={{
             flex: 1,
             height: 36,
@@ -77,9 +78,9 @@ export default function JourneyPlanner({ onLocationSelect }: Props) {
         <button id="search_btn" onClick={handleSearchClick}>
           Search
         </button>
-      </div>
+      </div> */}
 
-      {/* 下拉框 */}
+      {/* 下拉框们 */}
       <label>DEPARTURE STATION</label>
       <select
         value={departureNumber ?? ''}
@@ -106,8 +107,17 @@ export default function JourneyPlanner({ onLocationSelect }: Props) {
         ))}
       </select>
 
-      <button id="go_btn" type="button" onClick={handleGoClick}>
+      {/* 操作按钮区 */}
+      <button id="go_btn"   type="button" onClick={handleGoClick}>
         GO
+      </button>
+      <button
+        id="go_btn"         /* 复用同一 CSS，外观一致 */
+        type="button"
+        style={{ marginTop: 8 }}   /* 与 GO 之间留点间距 */
+        onClick={handleClearClick}
+      >
+        CLEAR
       </button>
     </div>
   );

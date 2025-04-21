@@ -7,7 +7,15 @@ interface Props {
 }
 
 const InfoWindowContent = ({ station }: Props) => {
-  const { setDepartureNumber, setArrivalNumber } = useRoute();
+  const {
+    departureNumber,
+    arrivalNumber,
+    setDepartureNumber,
+    setArrivalNumber
+  } = useRoute();
+
+  const isDeparture = station.number === departureNumber;
+  const isArrival   = station.number === arrivalNumber;
 
   return (
     <div id="stand_info">
@@ -15,14 +23,12 @@ const InfoWindowContent = ({ station }: Props) => {
       <h2>{station.name?.toUpperCase()}</h2>
       <h4>{station.status === 'OPEN' ? 'OPEN' : 'CLOSED'}</h4>
 
-      <div><strong>Total capacity:</strong> {station.capacity}</div>
-      <div><strong>Available bike stands:</strong> {station.availableBikeStands}</div>
-      <div><strong>Available bikes:</strong> {station.availableBikes}</div>
-      <div><strong>Mechanical bikes:</strong> {station.mechanicalBikes}</div>
-      <div><strong>Electrical bikes:</strong> {station.electricalBikes}</div>
+      <div><span className="label">Available bike stands:</span> {station.availableBikeStands}</div>
+      <div><span className="label">Available bikes:</span> {station.availableBikes}</div>
+      <div><span className="label">Mechanical bikes:</span> {station.mechanicalBikes}</div>
+      <div><span className="label">Electrical bikes:</span> {station.electricalBikes}</div>
 
-      <div style={{ marginTop: '6px' }}>
-        Credit cards accepted:
+      <div><span className="label">Credit cards accepted:</span>
         {station.banking ? (
           <img src="/img/green_tick.png" alt="yes" />
         ) : (
@@ -33,12 +39,22 @@ const InfoWindowContent = ({ station }: Props) => {
       <button id="ml_prediction_btn">ML Future Availability Prediction</button>
 
       <div style={{ marginTop: 10 }}>
-        <button className="plan-btn" onClick={() => setDepartureNumber(station.number)}>
-          DEPARTURE STATION
-        </button>
-        <button className="plan-btn" style={{ marginLeft: 8 }} onClick={() => setArrivalNumber(station.number)}>
-          ARRIVAL STATION
-        </button>
+      <button
+  className={`plan-btn ${isDeparture ? 'disabled' : ''}`}
+  onClick={() => setDepartureNumber(station.number)}
+  disabled={isDeparture}
+>
+  Set as Departure
+</button>
+
+<button
+  className={`plan-btn ${isArrival ? 'disabled' : ''}`}
+  onClick={() => setArrivalNumber(station.number)}
+  disabled={isArrival}
+  style={{ marginLeft: 8 }}
+>
+  Set as Arrival
+</button>
       </div>
     </div>
   );

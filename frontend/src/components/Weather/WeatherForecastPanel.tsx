@@ -30,14 +30,14 @@ const WeatherForecastPanel = ({ onClose }: { onClose: () => void }) => {
     lineWidth: 2,
     pointSize: 4,
     hAxis: {
-      textStyle: { fontSize: 11 },
+      textStyle: { fontSize: 12.5 },
       gridlines: {
         color: '#cccccc', // 横线颜色
         count: 4,
       },
     },
     vAxis: {
-      textStyle: { fontSize: 12 },
+      textStyle: { fontSize: 13 },
       gridlines: {
         color: '#cccccc', // 竖线颜色
         count: 5,

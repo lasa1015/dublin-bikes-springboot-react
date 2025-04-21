@@ -41,6 +41,9 @@ const StationMarkers = ({ stations }: Props) => {
         <InfoWindow
           position={{ lat: selectedStation.latitude, lng: selectedStation.longitude }}
           onCloseClick={() => setSelectedStation(null)}
+          options={{
+            pixelOffset: new window.google.maps.Size(0, -47)  //  向上偏移 20 像素
+          }}
         >
           <InfoWindowContent station={selectedStation} />
         </InfoWindow>

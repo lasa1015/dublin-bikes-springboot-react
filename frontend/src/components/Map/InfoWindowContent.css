@@ -1,20 +1,22 @@
 #stand_info {
-  margin: 0px 5px 5px 5px;
+  margin: -3px 5px 5px 5px;  
   font-size: 14px;
   font-family: Arial, sans-serif;
   min-width: 220px;
+  padding-top: 0px;  
+  
 }
 
 #stand_info h2 {
   color: #e6713f;
-  font-size: 16px;
+  font-size: 17px;
   margin-bottom: 26px;
   margin-top: 6px;
 }
 
 #stand_info h4 {
-  color: #007159;
-  font-size: 13px;
+  color: #0da05c;
+  font-size: 14px;
   margin: 0px 0px 20px 0px;
   font-weight: bold;
 }
@@ -65,11 +67,28 @@
   cursor:pointer;
   background:linear-gradient(to right,#6ebbc6,#3cbca0);
   color:#fff;
-  font-size:12px;
+  font-size:14px;
   border:none;
   margin-top: 10px;
   border-radius:3px;
-  padding:8px 14px;
+  padding:8px 18px;
   
 }
 .plan-btn:hover{ background:linear-gradient(to right,#ff5e62,#ff9966); }
+
+
+.label {
+  
+  font-size: 15px;
+  margin-bottom: 5px;
+  margin-right: 10px;
+  display: inline-block;
+  /* width: 160px; 可选，让所有 label 对齐 */
+}
+
+.plan-btn.disabled {
+  background: #e3e3e3 !important;
+  color: #666 !important;
+  cursor: not-allowed !important;
+  box-shadow: none;
+}

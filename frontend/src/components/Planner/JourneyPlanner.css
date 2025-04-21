@@ -16,7 +16,7 @@
   width: 310px;
   height: auto;
   display: block;
-  margin: -10px -15px 15px -15px;
+  margin: -10px -15px 25px -15px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 }
@@ -64,7 +64,7 @@
 
 /* 下拉框区域 */
 #journey_planner label {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: bold;
   display: block;
   margin-top: 10px;
@@ -74,20 +74,22 @@
 
 #journey_planner select {
   width: 100%;
-  padding: 7px 10px;
+  padding: 10px 10px;
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 3px;
-  margin-bottom: 10px;
+  margin-bottom: 17px;
 }
 
 /* GO按钮 */
 #journey_planner #go_btn {
   width: 100%;
   padding: 10px 0;
-  background: linear-gradient(to right bottom, #6ebbc6, #3cbca0);
+  background: linear-gradient(to right , #55c5c1, #3bbda1);
   color: white;
-  font-size: 16px;
+  font-size: 15px;
+  margin-bottom: 10px;
+  margin-top: 5px;
   font-weight: bold;
   border: none;
   border-radius: 4px;
