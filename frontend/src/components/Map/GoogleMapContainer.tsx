@@ -1,62 +1,47 @@
-import { GoogleMap, useLoadScript } from '@react-google-maps/api';
-import StationMarkers from './StationMarkers';
-import useStations from '../../hooks/useStations';
-import WeatherPanel from '../Weather/WeatherPanel';
+import { GoogleMap, Marker } from '@react-google-maps/api';
+import StationMarkers        from './StationMarkers';
+import useStations           from '../../hooks/useStations';
 
-const mapContainerStyle = {
-  width: '100%',
-  height: '100vh',
-};
+const mapStyle = { width: '100%', height: '100vh' };
+const dublin   = { lat: 53.346, lng: -6.26 };
 
-const center = {
-  lat: 53.346,
-  lng: -6.26,
-};
+interface Props {
+  searchLocation: google.maps.LatLngLiteral | null;  // 从 App 传来
+}
 
-const libraries: ("places" | "geometry")[] = ['places', 'geometry'];
+export default function GoogleMapContainer({ searchLocation }: Props) {
+  const stations = useStations();
 
-const GoogleMapContainer = () => {
-  const stations = useStations(); // ✅ 使用自定义 Hook 获取数据
-
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY!,
-    libraries,
-  });
-
-  if (loadError) return <div>地图加载失败</div>;
-  if (!isLoaded) return <div>地图加载中...</div>;
-
+  // API 脚本已由 <LoadScript> 提前加载，这里肯定能访问 google
   return (
-    <>
-    <WeatherPanel />
     <GoogleMap
-      mapContainerStyle={mapContainerStyle}
-      zoom={14}
-      center={center}
+      mapContainerStyle={mapStyle}
+      center={searchLocation ?? dublin}      // 有搜索点 → 以它为中心
+      zoom={searchLocation ? 16 : 14}
       options={{
         disableDefaultUI: true,
         zoomControl: true,
-        gestureHandling: 'greedy', 
-        clickableIcons: false,  
+        gestureHandling: 'greedy',
+        clickableIcons: false,
         styles: [
-          {
-            featureType: 'poi',
-            elementType: 'labels',
-            stylers: [{ visibility: 'off' }],
-          },
-          {
-            featureType: 'transit',
-            elementType: 'labels',
-            stylers: [{ visibility: 'off' }],
-          },
+          { featureType: 'poi',     elementType: 'labels', stylers: [{ visibility: 'off' }] },
+          { featureType: 'transit', elementType: 'labels', stylers: [{ visibility: 'off' }] },
         ],
       }}
     >
+      {/* 站点 Marker */}
       <StationMarkers stations={stations} />
-    </GoogleMap>
-    
-    </>
-  );
-};
 
-export default GoogleMapContainer;
+      {/* 搜索出来的位置 Marker（有值才渲染） */}
+      {searchLocation && (
+        <Marker
+          position={searchLocation}
+          icon={{
+            url: '/img/target.png',
+            scaledSize: new google.maps.Size(32, 32),
+          }}
+        />
+      )}
+    </GoogleMap>
+  );
+}

@@ -1,0 +1,90 @@
+#journey_planner {
+  position: absolute;
+  bottom: 15px;
+  right: 60px;
+  width: 280px;
+  background: rgb(251, 251, 251);
+  color: #4e937d;
+  padding: 10px 15px 15px 15px;
+  z-index: 9999;
+  border-radius: 5px;
+  box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.3);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#title {
+  width: 310px;
+  height: auto;
+  display: block;
+  margin: -10px -15px 15px -15px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+/* 搜索区域 */
+#search_wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+#journey_planner input[type="text"] {
+  flex-grow: 1;
+  padding: 6px 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+#journey_planner #search_btn {
+  margin-left: 6px;
+  padding: 6px 12px;
+  font-size: 14px;
+  background-color: #5ec7b3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+#journey_planner #search_btn:hover {
+  background: linear-gradient(to right, #ff5e62, #ff9966);
+}
+
+/* 下拉框区域 */
+#journey_planner label {
+  font-size: 13px;
+  font-weight: bold;
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  color: #5b9a8b;
+}
+
+#journey_planner select {
+  width: 100%;
+  padding: 7px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-bottom: 10px;
+}
+
+/* GO按钮 */
+#journey_planner #go_btn {
+  width: 100%;
+  padding: 10px 0;
+  background: linear-gradient(to right bottom, #6ebbc6, #3cbca0);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#journey_planner #go_btn:hover {
+  background: linear-gradient(to right, #ff5e62, #ff9966);
+}

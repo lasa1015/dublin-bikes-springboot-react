@@ -45,7 +45,24 @@ const InfoWindowContent = ({ station }: Props) => {
       </div>
 
       {/* 按钮 */}
-      <button id="ml_prediction_btn">ML Availability Prediction</button>
+      <button id="ml_prediction_btn">ML Futrue Availability Prediction</button>
+      <div style={{ marginTop: 10 }}>
+        <button
+          className="plan-btn"
+          onClick={() => setDeparture(station.name)}
+        >
+          DEPARTURE STATION
+        </button>
+
+        <button
+          className="plan-btn"
+          onClick={() => setArrival(station.name)}
+          style={{ marginLeft: 8 }}
+        >
+          ARRIVAL STATION
+        </button>
+      </div>
+      
     </div>
   );
 };

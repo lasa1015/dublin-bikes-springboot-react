@@ -30,7 +30,7 @@ const WeatherPanel = () => {
             id="weather_prediction_btn"
             onClick={() => setShowForecast(true)}
           >
-            forecast
+            weather forecast
           </button>
         </div>
       </div>

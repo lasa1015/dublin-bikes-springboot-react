@@ -27,7 +27,7 @@
 }
 
 #ml_prediction_btn {
-  margin-top: 12px;
+  margin-top: 18px;
   cursor: pointer;
   padding: 6px 10px;
   border-radius: 4px;
@@ -60,3 +60,16 @@
   font-size: 14px;
   margin-left: 4px;
 }
+
+.plan-btn{
+  cursor:pointer;
+  background:linear-gradient(to right,#6ebbc6,#3cbca0);
+  color:#fff;
+  font-size:12px;
+  border:none;
+  margin-top: 10px;
+  border-radius:3px;
+  padding:8px 14px;
+  
+}
+.plan-btn:hover{ background:linear-gradient(to right,#ff5e62,#ff9966); }
