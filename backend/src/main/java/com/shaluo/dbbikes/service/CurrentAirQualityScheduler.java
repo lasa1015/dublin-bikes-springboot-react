@@ -48,6 +48,7 @@ public class CurrentAirQualityScheduler {
             aq.setPm25(components.get("pm2_5").asDouble());
             aq.setPm10(components.get("pm10").asDouble());
 
+            airQualityRepository.deleteAll(); // 清空旧数据，保证只保留最新一条
             airQualityRepository.save(aq);
 
         } catch (Exception e) {
