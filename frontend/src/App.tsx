@@ -1,33 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
 import './App.css'
 
+interface AirQuality {
+  recordedTime: string
+  longitude: number
+  latitude: number
+  aqi: number
+  pm25: number
+  pm10: number
+}
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [airQuality, setAirQuality] = useState<AirQuality | null>(null)
+
+  useEffect(() => {
+    fetch('/api/airquality/latest')
+      .then(res => res.json())
+      .then(data => {
+        setAirQuality(data)
+      })
+      .catch(err => {
+        console.error('获取空气质量失败:', err)
+      })
+  }, [])
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h1>当前空气质量（Dublin）</h1>
+      {airQuality ? (
+        <div style={{ textAlign: 'left', backgroundColor: '#f4f4f4', padding: '1rem', borderRadius: '10px' }}>
+          <p><strong>时间：</strong>{new Date(airQuality.recordedTime).toLocaleString()}</p>
+          <p><strong>位置：</strong>经度 {airQuality.longitude}, 纬度 {airQuality.latitude}</p>
+          <p><strong>AQI：</strong>{airQuality.aqi}</p>
+          <p><strong>PM2.5：</strong>{airQuality.pm25}</p>
+          <p><strong>PM10：</strong>{airQuality.pm10}</p>
+        </div>
+      ) : (
+        <p>正在加载空气质量数据...</p>
+      )}
     </>
   )
 }

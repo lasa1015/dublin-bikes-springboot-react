@@ -18,6 +18,7 @@ public class AirQualityScheduler {
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
 
+    // 从 Spring Boot 配置源中读取名为 openweather.api.key 的配置值，并注入到变量 apiKey 中。
     @Value("${openweather.api.key}")
     private String apiKey;
 
@@ -27,7 +28,7 @@ public class AirQualityScheduler {
         this.objectMapper = new ObjectMapper();
     }
 
-    @Scheduled(fixedRate = 300000) // 每5分钟抓一次
+    @Scheduled(fixedRate = 600000) // 每10分钟抓一次
     public void fetchAirQualityData() {
         try {
             String url = "http://api.openweathermap.org/data/2.5/air_pollution?lat=53.349805&lon=-6.26031&appid=" + apiKey;
