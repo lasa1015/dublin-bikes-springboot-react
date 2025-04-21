@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "current_weather")
-public class CurrentWeather {
+@Table(name = "current_weather_forecast")
+public class CurrentWeatherForecast {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,9 +13,12 @@ public class CurrentWeather {
 
     private LocalDateTime recordedAt;
 
+    private LocalDateTime forecastTime;
+
     private Double longitude;
     private Double latitude;
 
+    private Integer weatherId;
     private String weatherMain;
     private String weatherDescription;
     private String weatherIcon;
@@ -26,12 +29,20 @@ public class CurrentWeather {
     private Double tempMax;
     private Integer pressure;
     private Integer humidity;
-    private Integer visibility;
+    private Double tempKf;
+
+    private Integer clouds;
     private Double windSpeed;
     private Integer windDeg;
-    private Integer clouds;
+    private Integer visibility;
 
-    private LocalDateTime timestamp;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public void setRecordedAt(LocalDateTime recordedAt) {
         this.recordedAt = recordedAt;
@@ -40,13 +51,12 @@ public class CurrentWeather {
     public LocalDateTime getRecordedAt() {
         return recordedAt;
     }
-
-    public Long getId() {
-        return id;
+    public LocalDateTime getForecastTime() {
+        return forecastTime;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setForecastTime(LocalDateTime forecastTime) {
+        this.forecastTime = forecastTime;
     }
 
     public Double getLongitude() {
@@ -63,6 +73,14 @@ public class CurrentWeather {
 
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
+    }
+
+    public Integer getWeatherId() {
+        return weatherId;
+    }
+
+    public void setWeatherId(Integer weatherId) {
+        this.weatherId = weatherId;
     }
 
     public String getWeatherMain() {
@@ -137,12 +155,20 @@ public class CurrentWeather {
         this.humidity = humidity;
     }
 
-    public Integer getVisibility() {
-        return visibility;
+    public Double getTempKf() {
+        return tempKf;
     }
 
-    public void setVisibility(Integer visibility) {
-        this.visibility = visibility;
+    public void setTempKf(Double tempKf) {
+        this.tempKf = tempKf;
+    }
+
+    public Integer getClouds() {
+        return clouds;
+    }
+
+    public void setClouds(Integer clouds) {
+        this.clouds = clouds;
     }
 
     public Double getWindSpeed() {
@@ -161,19 +187,11 @@ public class CurrentWeather {
         this.windDeg = windDeg;
     }
 
-    public Integer getClouds() {
-        return clouds;
+    public Integer getVisibility() {
+        return visibility;
     }
 
-    public void setClouds(Integer clouds) {
-        this.clouds = clouds;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
+    public void setVisibility(Integer visibility) {
+        this.visibility = visibility;
     }
 }

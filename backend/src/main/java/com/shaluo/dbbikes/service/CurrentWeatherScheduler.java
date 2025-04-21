@@ -55,6 +55,8 @@ public class CurrentWeatherScheduler {
         weather.setClouds(((Number) clouds.get("all")).intValue());
         weather.setTimestamp(LocalDateTime.now());
 
+        weather.setRecordedAt(LocalDateTime.now()); // 设置当前时间
+
         weatherRepository.deleteAll(); // 删除旧记录
         weatherRepository.save(weather);
     }

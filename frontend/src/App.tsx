@@ -29,11 +29,29 @@ interface CurrentWeather {
   clouds: number;
 }
 
+interface WeatherForecast {
+  id: number;
+  forecastTime: string;
+  temp: number;
+  feelsLike: number;
+  weatherMain: string;
+  weatherDescription: string;
+  weatherIcon: string;
+}
+
+
 function App() {
   const [airQuality, setAirQuality] = useState<AirQuality | null>(null);
   const [weather, setWeather] = useState<CurrentWeather | null>(null);
+  const [forecastList, setForecastList] = useState<WeatherForecast[]>([]);
+
 
   useEffect(() => {
+    fetch('/api/current-weather-forecast/all')
+  .then(res => res.json())
+  .then(setForecastList)
+  .catch(err => console.error('获取天气预报失败:', err));
+
     fetch('/api/airquality/latest')
       .then((res) => res.json())
       .then(setAirQuality)
@@ -43,6 +61,7 @@ function App() {
       .then((res) => res.json())
       .then(setWeather)
       .catch((err) => console.error('获取天气数据失败:', err));
+
   }, []);
 
   return (
@@ -88,6 +107,32 @@ function App() {
           <p>正在加载天气数据...</p>
         )}
       </section>
+
+
+      {/* 天气预报模块 */}
+<section style={{ background: '#fff3e0', padding: '1rem', borderRadius: '10px', marginTop: '2rem' }}>
+  <h2>未来天气预报</h2>
+  {forecastList.length > 0 ? (
+    <div>
+      {forecastList.slice(0, 10).map(forecast => (
+        <div key={forecast.id} style={{ borderBottom: '1px solid #ccc', padding: '0.5rem 0' }}>
+          <p><strong>时间：</strong>{new Date(forecast.forecastTime).toLocaleString()}</p>
+          <p><strong>天气：</strong>{forecast.weatherMain}（{forecast.weatherDescription}）</p>
+          <p><strong>温度：</strong>{forecast.temp}°C，体感 {forecast.feelsLike}°C</p>
+          {forecast.weatherIcon && (
+            <img
+              src={`http://openweathermap.org/img/wn/${forecast.weatherIcon}@2x.png`}
+              alt="天气图标"
+            />
+          )}
+        </div>
+      ))}
+    </div>
+  ) : (
+    <p>正在加载天气预报数据...</p>
+  )}
+</section>
+
     </div>
   );
 }
