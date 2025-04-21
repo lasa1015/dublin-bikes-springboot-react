@@ -7,6 +7,7 @@ import JourneyPlanner  from './components/Planner/JourneyPlanner';
 import GoogleMapContainer from './components/Map/GoogleMapContainer';
 import { useState }    from 'react';
 import ToggleOverlayButtons from './components/Map/ToggleOverlayButtons';
+import Legend from './components/Map/Legend'; // ← 别忘记引入 Legend
 
 export default function App() {
   /* 你的 useJsApiLoader / 天气等逻辑照旧 */
@@ -46,9 +47,12 @@ const [showStandsLayer, setShowStandsLayer] = useState(false);
     });
   }}
 />
+
       <WeatherPanel />
       <JourneyPlanner /* onLocationSelect={setSearchLocation} 可留待以后用 */ />
-      
+        {/* ✅ 条件渲染图例 */}
+  {(showBikesLayer || showStandsLayer) && <Legend />}
+
       <GoogleMapContainer
 
   searchLocation={searchLocation}
