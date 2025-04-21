@@ -2,6 +2,8 @@ project_log
 .env
 .git
 node_modules
+scraper/new_bike_data_scraper.py
+scraper/new_weather_data_scraper.py
 
 backend/HELP.md
 target/
