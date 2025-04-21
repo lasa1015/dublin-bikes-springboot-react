@@ -1,7 +1,7 @@
 project_log
 .env
 .git
-
+node_modules
 
 backend/HELP.md
 target/
