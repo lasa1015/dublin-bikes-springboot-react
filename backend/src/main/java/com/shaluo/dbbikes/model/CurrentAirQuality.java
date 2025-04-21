@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "airquality")
-public class AirQuality {
+@Table(name = "current_airquality")
+public class CurrentAirQuality {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

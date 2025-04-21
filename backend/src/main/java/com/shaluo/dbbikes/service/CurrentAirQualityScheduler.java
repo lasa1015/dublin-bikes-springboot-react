@@ -2,7 +2,7 @@ package com.shaluo.dbbikes.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.shaluo.dbbikes.model.AirQuality;
+import com.shaluo.dbbikes.model.CurrentAirQuality;
 import com.shaluo.dbbikes.repository.AirQualityRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDateTime;
 
 @Component
-public class AirQualityScheduler {
+public class CurrentAirQualityScheduler {
 
     private final AirQualityRepository airQualityRepository;
     private final RestTemplate restTemplate;
@@ -22,7 +22,7 @@ public class AirQualityScheduler {
     @Value("${openweather.api.key}")
     private String apiKey;
 
-    public AirQualityScheduler(AirQualityRepository airQualityRepository) {
+    public CurrentAirQualityScheduler(AirQualityRepository airQualityRepository) {
         this.airQualityRepository = airQualityRepository;
         this.restTemplate = new RestTemplate();
         this.objectMapper = new ObjectMapper();
@@ -40,7 +40,7 @@ public class AirQualityScheduler {
             JsonNode main = list.get("main");
             JsonNode components = list.get("components");
 
-            AirQuality aq = new AirQuality();
+            CurrentAirQuality aq = new CurrentAirQuality();
             aq.setRecordedTime(LocalDateTime.now());
             aq.setLatitude(53.349805);
             aq.setLongitude(-6.26031);
