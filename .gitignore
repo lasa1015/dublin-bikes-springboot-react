@@ -1,9 +1,11 @@
-project_log
+project_log/
 .env
-.git
-node_modules
+.git/
+node_modules/
+logs/
 
-backend/HELP.md
+
+
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/

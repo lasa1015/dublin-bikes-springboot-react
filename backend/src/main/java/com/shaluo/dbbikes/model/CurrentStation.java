@@ -10,12 +10,12 @@ public class CurrentStation {
     @Id
     private Integer number; // 站点编号作为主键
 
-    private String name; // 🆕 新增 - 站点名称
-    private String address; // 🆕 新增 - 地址
-    private String contractName; // 🆕 新增 - 所属城市或地区
+    private String name; //   站点名称
+    private String address; // 地址
+    private String contractName; //  所属城市或地区
 
     private String status;
-//    private LocalDateTime lastUpdate;
+
     private Boolean connected;
     private Boolean overflow;
     private Boolean banking;

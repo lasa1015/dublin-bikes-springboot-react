@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CurrentWeatherRepository extends JpaRepository<CurrentWeather, Long> {
-    CurrentWeather findTopByOrderByTimestampDesc();
+
 }

@@ -14,8 +14,10 @@ public class CurrentWeatherController {
         this.weatherRepository = weatherRepository;
     }
 
+
     @GetMapping("/latest")
     public CurrentWeather getLatestWeather() {
-        return weatherRepository.findTopByOrderByTimestampDesc();
+
+        return weatherRepository.findAll().get(0);
     }
 }

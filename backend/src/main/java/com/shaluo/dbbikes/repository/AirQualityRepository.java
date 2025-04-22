@@ -7,6 +7,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AirQualityRepository extends JpaRepository<CurrentAirQuality, Long> {
 
-    // 可选：获取最新一条记录
-    CurrentAirQuality findTopByOrderByRecordedTimeDesc();
 }

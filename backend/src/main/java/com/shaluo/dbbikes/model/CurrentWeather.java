@@ -31,7 +31,6 @@ public class CurrentWeather {
     private Integer windDeg;
     private Integer clouds;
 
-    private LocalDateTime timestamp;
 
     public void setRecordedAt(LocalDateTime recordedAt) {
         this.recordedAt = recordedAt;
@@ -169,11 +168,4 @@ public class CurrentWeather {
         this.clouds = clouds;
     }
 
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
-    }
 }

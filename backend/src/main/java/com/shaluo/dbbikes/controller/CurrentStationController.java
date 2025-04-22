@@ -16,8 +16,12 @@ public class CurrentStationController {
         this.bikeRepository = bikeRepository;
     }
 
+
+
     @GetMapping("/all")
     public List<CurrentStation> getAllStations() {
         return bikeRepository.findAll();
     }
+
+
 }
