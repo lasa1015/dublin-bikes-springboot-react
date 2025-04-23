@@ -1,5 +1,4 @@
 import './JourneyPlanner.css';
-import { useEffect, useRef, useState } from 'react';
 
 
 // 全局上下文：用于管理路线相关状态（出发站/到达站、触发路线等）
@@ -8,16 +7,11 @@ import { useRoute } from '../../contexts/RouteContext';
 // 获取所有站点数据（从后端获取，包含编号、坐标、名称等）
 import { useStationContext } from '../../contexts/StationContext';
 
-// 组件参数类型：onLocationSelect 是一个函数，用于将用户搜索选中的位置传给父组件
-interface Props {
-  onLocationSelect: (loc: google.maps.LatLngLiteral | null) => void;
-}
 
-
-export default function JourneyPlanner({ onLocationSelect }: Props) {
-
+export default function JourneyPlanner() {
   const { stations } = useStationContext();
-  
+
+
 
   const {
     departureNumber,       // 当前选中的出发站编号
@@ -28,37 +22,7 @@ export default function JourneyPlanner({ onLocationSelect }: Props) {
     clearAll,              // 一键清除所有状态（出发站、到达站）
   } = useRoute();
 
-  /* ---------- gmp-place-autocomplete 的状态 ---------- */
-  const [selectedPlace, setSelectedPlace] =
-    useState<google.maps.places.PlaceResult | null>(null);
-
-
-
-  // 当用户选择了一个搜索结果时，自动获取其坐标并调用父组件提供的 onLocationSelect
-  useEffect(() => {
-    const el = document.querySelector('gmp-place-autocomplete'); // 获取原生 HTML 元素
-    const handler = async (e: any) => {
-      const place = await e.detail.place;
-      setSelectedPlace(place);
-      place.geometry?.location &&
-        onLocationSelect({
-          lat: place.geometry.location.lat(),
-          lng: place.geometry.location.lng(),
-        });
-    };
-    el?.addEventListener('placechange', handler);
-    return () => el?.removeEventListener('placechange', handler); // 卸载时清除监听器
-  }, [onLocationSelect]);
-
-  // 点击 Search 按钮时（可选功能，防止用户只选不点）
-  const handleSearchClick = () => {
-    selectedPlace?.geometry?.location &&
-      onLocationSelect({
-        lat: selectedPlace.geometry.location.lat(),
-        lng: selectedPlace.geometry.location.lng(),
-      });
-  };
-
+  
 
   // 点击 GO：如果出发站和到达站都有选中，则触发路线规划
   const handleGoClick = () => {
@@ -74,29 +38,9 @@ export default function JourneyPlanner({ onLocationSelect }: Props) {
     <div id="journey_planner">
       <img id="title" src="/img/title.png" alt="logo" />
 
-      {/* 🔍 地点搜索框（目前注释掉了，可恢复使用） */}
-      {/*
-      <div id="search_wrapper" style={{ zIndex: 9999, display: 'flex', gap: 6 }}>
-        <gmp-place-autocomplete
-          style={{
-            flex: 1,
-            height: 36,
-            borderRadius: 4,
-            border: 'none',
-            fontSize: 14,
-            fontFamily: 'inherit',
-            boxSizing: 'border-box',
-          }}
-          placeholder="Enter your target location"
-        ></gmp-place-autocomplete>
+            
 
-        <button id="search_btn" onClick={handleSearchClick}>
-          Search
-        </button>
-      </div>
-      */}
-
-      {/*  出发站选择下拉框 */}
+      {/* 出发站选择下拉框 */}
       <label>DEPARTURE STATION</label>
       <select
         value={departureNumber ?? ''}
@@ -124,15 +68,14 @@ export default function JourneyPlanner({ onLocationSelect }: Props) {
         ))}
       </select>
 
-      {/* 操作按钮区域 */}
+      {/* 操作按钮区 */}
       <button id="go_btn" type="button" onClick={handleGoClick}>
         GO
       </button>
-
       <button
-        id="go_btn"         // 复用相同样式
+        id="go_btn"
         type="button"
-        style={{ marginTop: 8 }}   // 与 GO 按钮保持间距
+        style={{ marginTop: 8 }}
         onClick={handleClearClick}
       >
         CLEAR

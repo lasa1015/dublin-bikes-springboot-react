@@ -85,7 +85,7 @@ const WeatherForecastPanel = ({ onClose }: { onClose: () => void }) => {
           chartType="LineChart"             // 图表类型：折线图
           data={tempChartData}              // 图表数据
           width="100%"                      // 图表宽度
-          height="250px"                    // 图表高度
+          height="100%" //  高度百分比自适应
           options={{
             ...baseChartOptions,            // 使用另一个文件写好的统一样式
             title: 'Temperature (°C)',      // 图表标题
@@ -100,7 +100,7 @@ const WeatherForecastPanel = ({ onClose }: { onClose: () => void }) => {
           chartType="LineChart"
           data={windChartData}
           width="100%"
-          height="250px"
+          height="100%" //  高度百分比自适应
           options={{
             ...baseChartOptions,
             title: 'Wind Speed (m/s)',

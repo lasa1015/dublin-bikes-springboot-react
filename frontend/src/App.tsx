@@ -15,6 +15,8 @@ import GoogleMapContainer from './components/Map/GoogleMapContainer';
 import ToggleOverlayButtons from './components/Map/ToggleOverlayButtons';
 import Legend from './components/Map/Legend';
 import { StationProvider } from './contexts/StationContext';
+import { SearchLocationProvider } from './contexts/SearchLocationContext';
+import { PredictionModalProvider } from './contexts/PredictionModalContext';
 
 // App 是整个前端的主组件，负责组合和管理所有子组件
 export default function App() {
@@ -56,6 +58,9 @@ export default function App() {
       <OverlayProvider>
 
       <StationProvider>
+
+     
+      <PredictionModalProvider>
         <Header />
 
 
@@ -72,6 +77,8 @@ export default function App() {
         {/* 把父组件状态变量传给 GoogleMapContainer 子组件使用 */}
         <GoogleMapContainer searchLocation={searchLocation}
         />
+        </PredictionModalProvider>
+       
            </StationProvider>
       </OverlayProvider>
     </RouteProvider>

@@ -24,7 +24,7 @@ export const baseChartOptions = {
 
   chartArea: {
     width: '87%',
-    height: '70%',
+    height: '75%',
     top: 40,
   },
 
