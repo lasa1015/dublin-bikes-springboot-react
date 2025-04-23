@@ -1,7 +1,7 @@
 import './WeatherForecastPanel.css';
 
 // 引入自定义 Hook：用于获取天气预测数据
-import useForecast from '../../hooks/useForecast';
+import useForecast from './hooks/useForecast';
 
 // 引入图表组件：react-google-charts 用于画图
 import { Chart } from 'react-google-charts';

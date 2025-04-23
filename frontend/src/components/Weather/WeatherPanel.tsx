@@ -1,10 +1,10 @@
 import './WeatherPanel.css';
 
 // 引入自定义 Hook：用于从后端或 API 获取当前天气数据
-import useWeather from '../../hooks/useWeather';
+import useWeather from './hooks/useWeather';
 
 // 引入自定义 Hook：用于从后端或 API 获取当前空气质量数据（例如 PM2.5）
-import useAirQuality from '../../hooks/useAirQuality';
+import useAirQuality from './hooks/useAirQuality';
 
 // 引入天气预报面板组件，用于显示未来一段时间的天气折线图
 import WeatherForecastPanel from './WeatherForecastPanel';

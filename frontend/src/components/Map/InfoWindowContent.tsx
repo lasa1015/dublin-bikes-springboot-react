@@ -1,5 +1,5 @@
 import { useRoute } from '../../contexts/RouteContext';   // 引入上下文，管理出发站和到达站
-import { CurrentStation } from '../../hooks/useStations';  // 引入车站数据的类型定义
+import { CurrentStation } from '../Weather/hooks/useStations';  // 引入车站数据的类型定义
 import './InfoWindowContent.css';  // 引入样式表
 
 // 定义组件的 Props 类型，要求传入一个 station（当前车站对象）

@@ -41,7 +41,7 @@ export default function useDrawOverlayCircles(mapRef: React.RefObject<google.map
 
     // 辅助函数：根据数量返回对应的颜色和半径系数
     const getColorAndRadius = (c: number) => {
-      if (c > 15) return { color: '#4caf50', factor: 9 };     // 绿色
+      if (c > 15) return { color: '#4caf50', factor: 7.5 };     // 绿色
       if (c > 7)  return { color: '#ff9800', factor: 10 };     // 橙色
       if (c >= 1) return { color: '#f44336', factor: 10 };     // 红色    
       return             { color: '#000000', factor: 10 };     // 黑色
@@ -62,7 +62,7 @@ export default function useDrawOverlayCircles(mapRef: React.RefObject<google.map
           center: { lat: st.latitude, lng: st.longitude },  // 圆心为车站坐标
           radius: Math.max(st.availableBikes * factor, minRadius),  // 半径按可借车数量乘以系数
           fillColor: color,   // 填充颜色
-          fillOpacity: 0.35,
+          fillOpacity: 0.3,
           strokeColor: '#fff', // 描边白色
           strokeOpacity: 0.55,
           strokeWeight: 1,
@@ -84,7 +84,7 @@ export default function useDrawOverlayCircles(mapRef: React.RefObject<google.map
           radius: Math.max(st.availableBikeStands * factor, minRadius),
 
           fillColor:color,
-          fillOpacity: 0.35,
+          fillOpacity: 0.3,
           strokeColor: '#fff',
           strokeOpacity: 0.55,
           strokeWeight: 1,
