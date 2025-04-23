@@ -3,15 +3,16 @@ import { useEffect, useRef } from 'react';
 // 引入图层控制的上下文，用于获取当前哪些图层需要显示
 import { useOverlay } from '../../../contexts/OverlayContext';
 
-// 自定义 Hook：获取所有站点数据（包含可用自行车数、可还空位数等）
-import useStations from '../../../hooks/useStations';
+// 引入车站数据的上下文，用于获取当前所有车站的信息
+import { useStationContext } from '../../../contexts/StationContext';
+
 
 // 根据当前图层显示状态，在地图上绘制“借车图层”和“还车图层”的圆圈
 // @param mapRef 地图实例的引用（GoogleMap 加载完成时写入的 ref）
 export default function useDrawOverlayCircles(mapRef: React.RefObject<google.maps.Map | null>) {
 
   // 获取当前所有车站数据
-  const stations = useStations();
+  const { stations } = useStationContext();
 
   // 获取当前图层状态（是否显示借车图层、是否显示还车图层）
   const { showBikesLayer, showStandsLayer } = useOverlay();

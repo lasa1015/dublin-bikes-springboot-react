@@ -1,11 +1,12 @@
 import './JourneyPlanner.css';
 import { useEffect, useRef, useState } from 'react';
 
-// 自定义 Hook：获取所有站点数据（从后端获取，包含编号、坐标、名称等）
-import useStations from '../../hooks/useStations';
 
 // 全局上下文：用于管理路线相关状态（出发站/到达站、触发路线等）
 import { useRoute } from '../../contexts/RouteContext';
+
+// 获取所有站点数据（从后端获取，包含编号、坐标、名称等）
+import { useStationContext } from '../../contexts/StationContext';
 
 // 组件参数类型：onLocationSelect 是一个函数，用于将用户搜索选中的位置传给父组件
 interface Props {
@@ -15,7 +16,8 @@ interface Props {
 
 export default function JourneyPlanner({ onLocationSelect }: Props) {
 
-  const stations = useStations(); // 获取站点数据，用于下拉框显示
+  const { stations } = useStationContext();
+  
 
   const {
     departureNumber,       // 当前选中的出发站编号

@@ -80,7 +80,7 @@ const InfoWindowContent = ({ station }: Props) => {
           className={`plan-btn ${isArrival ? 'disabled' : ''}`}
           onClick={() => setArrivalNumber(station.number)}
           disabled={isArrival}
-          style={{ marginLeft: 8 }}
+          style={{ marginLeft: 10 }}
         >
           Set as Arrival
         </button>

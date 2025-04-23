@@ -1,8 +1,9 @@
 import { Marker, InfoWindow } from '@react-google-maps/api'; // 导入 Google 地图上的标记（Marker）和信息窗（InfoWindow）组件
-import useStations, { CurrentStation } from '../../hooks/useStations';    // 导入车站数据类型接口
+
 import { useState } from 'react';                            // 引入 React 的状态管理 Hook
 import InfoWindowContent from './InfoWindowContent';         // 引入自定义的信息窗内容组件
 import { useRoute } from '../../contexts/RouteContext';      // 使用全局路径规划上下文（出发站和到达站的编号）
+import { CurrentStation, useStationContext } from '../../contexts/StationContext';
 
 
 
@@ -11,7 +12,9 @@ import { useRoute } from '../../contexts/RouteContext';      // 使用全局路�
 // * 解构名必须跟 Props 中的字段名一致
 const StationMarkers = () => {
 
-  const stations = useStations();
+
+  const { stations } = useStationContext();
+  
 
   // 当前点击选中的车站，初始为 null
   const [selectedStation, setSelectedStation] = useState<CurrentStation | null>(null);

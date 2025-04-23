@@ -14,7 +14,7 @@ import JourneyPlanner from './components/Planner/JourneyPlanner';
 import GoogleMapContainer from './components/Map/GoogleMapContainer';
 import ToggleOverlayButtons from './components/Map/ToggleOverlayButtons';
 import Legend from './components/Map/Legend';
-import useStations from './hooks/useStations';
+import { StationProvider } from './contexts/StationContext';
 
 // App 是整个前端的主组件，负责组合和管理所有子组件
 export default function App() {
@@ -36,8 +36,7 @@ export default function App() {
   // searchLocation 表示用户在右下角搜索框中选中的地图位置（经纬度）
   const [searchLocation, setSearchLocation] = useState<google.maps.LatLngLiteral | null>(null);
   
-  
-  useStations(); 
+
 
 
   // 地图脚本尚未加载完成时，展示加载提示
@@ -55,6 +54,8 @@ export default function App() {
     <RouteProvider>
       {/* 图层显示状态的全局上下文提供器 */}
       <OverlayProvider>
+
+      <StationProvider>
         <Header />
 
 
@@ -71,6 +72,7 @@ export default function App() {
         {/* 把父组件状态变量传给 GoogleMapContainer 子组件使用 */}
         <GoogleMapContainer searchLocation={searchLocation}
         />
+           </StationProvider>
       </OverlayProvider>
     </RouteProvider>
   );

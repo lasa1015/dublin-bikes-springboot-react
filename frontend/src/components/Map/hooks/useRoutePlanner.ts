@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useRoute } from '../../../contexts/RouteContext';     // 全局上下文，用于管理出发/到达站编号、规划触发器和结果
-import useStations from '../../../hooks/useStations';          // 自定义 Hook：获取当前所有车站数据
+import { useStationContext } from '../../../contexts/StationContext';
 
 /**
  * useRoutePlanner Hook：用于在点击 GO 后根据出发站与到达站编号规划路线
@@ -9,7 +9,7 @@ import useStations from '../../../hooks/useStations';          // 自定义 Hook
 export default function useRoutePlanner(mapRef: React.RefObject<google.maps.Map | null>) {
   
   // 获取当前车站列表（包括编号、经纬度等）
-  const stations = useStations();
+   const { stations } = useStationContext();
 
   // 从上下文中获取路线规划所需的状态和方法
   const {
