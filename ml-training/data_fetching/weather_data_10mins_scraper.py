@@ -7,7 +7,7 @@ import requests
 import pymysql
 import datetime
 from pymysql import Error
-from config import Config  
+from config import Config
 
 
 # Database configuration constants
@@ -23,9 +23,9 @@ DB_CONFIG = {
 WEATHER_API_CONFIG = {
     'url': "http://api.openweathermap.org/data/2.5/weather",
     'params': {
-        'lat': 53.349805,  
-        'lon': -6.260310, 
-        'appid': Config.OPENWEATHER_API_KEY,  
+        'lat': 53.349805,
+        'lon': -6.260310,
+        'appid': Config.OPENWEATHER_API_KEY,
         'units': 'metric'
     }
 }
@@ -58,10 +58,10 @@ def insert_weather_data(conn, weather_data):
             main_data = weather_data['main']
             wind_data = weather_data['wind']
             values = (
-                weather_data['id'], weather_data['coord']['lon'], weather_data['coord']['lat'], weather_main['id'], 
-                weather_main['main'], weather_main['description'], weather_main['icon'], main_data['temp'], 
-                main_data['feels_like'], main_data['temp_min'], main_data['temp_max'], main_data['pressure'], 
-                main_data['humidity'], weather_data.get('visibility'), wind_data['speed'], wind_data['deg'], 
+                weather_data['id'], weather_data['coord']['lon'], weather_data['coord']['lat'], weather_main['id'],
+                weather_main['main'], weather_main['description'], weather_main['icon'], main_data['temp'],
+                main_data['feels_like'], main_data['temp_min'], main_data['temp_max'], main_data['pressure'],
+                main_data['humidity'], weather_data.get('visibility'), wind_data['speed'], wind_data['deg'],
                 weather_data['clouds']['all'], weather_data['dt']
             )
             cursor.execute(insert_query, values)
@@ -80,16 +80,16 @@ def event_log(event):
 
 # Fetch and insert weather data every 60 minutes
 def main():
-    while True:    
+    while True:
         try:
             weather = fetch_data(WEATHER_API_CONFIG['url'], WEATHER_API_CONFIG['params'])
             db_conn = get_db_connection(DB_CONFIG)
             with db_conn:
                 insert_weather_data(db_conn, weather)
-            time.sleep(600)  # 每10分钟运行一次
+            time.sleep(600)
         except Error as e:
             print(f"An error occurred: {e}")
-        
+
 
 if __name__ == "__main__":
     main()

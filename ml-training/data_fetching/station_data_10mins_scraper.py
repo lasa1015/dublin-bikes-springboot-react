@@ -1,17 +1,31 @@
-import sys
 import os
+import sys
+import time
 import traceback
+import datetime
 import requests
 import pymysql
-import datetime
-import time
 from pymysql import Error
+from dotenv import load_dotenv
 
-# 配置导入路径
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from config import Config
+load_dotenv()
 
-# 日志写入函数
+DB_CONFIG = {
+    'host': os.getenv("DB_HOST"),
+    'user': os.getenv("DB_USER"),
+    'password': os.getenv("DB_PASSWORD"),
+    'db': os.getenv("DB_NAME"),
+    'port': int(os.getenv("DB_PORT"))
+}
+
+API_CONFIG = {
+    'url': "https://api.jcdecaux.com/vls/v3/stations",
+    'params': {
+        'apiKey': os.getenv("JCDECAUX_API_KEY"),
+        'contract': "Dublin"
+    }
+}
+
 def log(msg):
     timestamp = datetime.datetime.now().strftime("[%Y-%m-%d %H:%M:%S]")
     line = f"{timestamp} {msg}"
@@ -20,38 +34,16 @@ def log(msg):
         f.write(line + "\n")
         f.flush()
 
-# 数据库配置
-DB_CONFIG = {
-    'host': Config.DB_HOST,
-    'user': Config.DB_USER,
-    'password': Config.DB_PASSWORD,
-    'db': Config.DB_NAME,
-    'port': Config.DB_PORT
-}
-
-# JCDecaux API 配置
-API_CONFIG = {
-    'url': "https://api.jcdecaux.com/vls/v3/stations",
-    'params': {
-        'apiKey': Config.JCDECAUX_API_KEY,
-        'contract': 'Dublin'
-    }
-}
-
-# 加载 API 数据
 def load_data(api_url, params):
     response = requests.get(api_url, params=params, timeout=10)
     response.raise_for_status()
     return response.json()
 
-# 建立数据库连接
 def get_db_connection(config):
     return pymysql.connect(**config)
 
-# 插入数据
 def insert_availability_data(cursor, station):
     total_avail = station.get("totalStands", {}).get("availabilities", {})
-
     insert_query = """
         INSERT INTO bike_data_10min (
             number, status, last_update, connected, overflow, banking, bonus,
@@ -88,30 +80,29 @@ def insert_availability_data(cursor, station):
         total_avail.get("electricalBikes")
     )
 
-    # 加这一行日志，输出当前抓到的数据关键字段
     log(f"Inserting station #{station.get('number')}: bikes={total_avail.get('bikes')}, stands={total_avail.get('stands')}, last_update={last_update}")
-
     cursor.execute(insert_query, values)
 
 
-# 插入所有数据
 def insert_data_to_db(stations, db_config):
+    connection = None
     try:
         connection = get_db_connection(db_config)
         with connection.cursor() as cursor:
             for station in stations:
                 insert_availability_data(cursor, station)
         connection.commit()
-        log("Database write successful.")
+        log("✅ Database write successful.")
     except pymysql.Error as db_error:
-        log(f"Database error: {db_error}")
+        log(f"❌ Database error: {db_error}")
         traceback.print_exc()
-        connection.rollback()
+        if connection:
+            connection.rollback()
     finally:
         if connection:
             connection.close()
 
-# 主循环
+# 主循环，每10分钟抓取一次
 def main():
     while True:
         try:
@@ -120,7 +111,7 @@ def main():
             log(f"Fetched {len(stations)} stations.")
             insert_data_to_db(stations, DB_CONFIG)
         except Exception as e:
-            log(f"Unexpected error: {e}")
+            log(f"❌ Unexpected error: {e}")
             traceback.print_exc()
         log("Sleeping for 10 minutes.\n")
         time.sleep(600)
