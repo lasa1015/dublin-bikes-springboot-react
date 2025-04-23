@@ -8,10 +8,12 @@ export default function useAirQuality() {
   const [airQuality, setAirQuality] = useState<AirQualityData | null>(null);
 
   useEffect(() => {
+    
     fetch('/api/airquality/latest')
       .then(res => res.json())
       .then(data => {
         setAirQuality({
+
           pm25: data.pm25,
         });
       })
