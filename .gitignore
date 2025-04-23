@@ -5,6 +5,13 @@ node_modules/
 logs/
 
 
+venv/
+__pycache__/
+*.py[cod]
+*.pkl
+
+
+
 
 target/
 !.mvn/wrapper/maven-wrapper.jar
