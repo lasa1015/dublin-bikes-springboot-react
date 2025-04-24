@@ -47,6 +47,9 @@ export const StationProvider = ({ children }: { children: ReactNode }) => {
     fetch('/api/current-bike/all')
       .then(res => res.json())    // 把响应体解析成 JSON 数据
       .then(data => {
+        // 按照 name 字段的字母顺序排序（阿拉伯字母顺序）
+        data.sort((a: CurrentStation, b: CurrentStation) => a.name.localeCompare(b.name));
+
         console.log('站点数据:', data);   // 打印接口返回的车站数据，方便调试
         setStations(data);    // 把返回的数据设置到 stations 状态中，触发组件更新
       })

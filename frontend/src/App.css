@@ -1,9 +1,19 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  text-align: left;
 }
+
+
+#map-wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
 
 .logo {
   height: 6em;

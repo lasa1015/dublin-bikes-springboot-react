@@ -17,6 +17,17 @@ public class PredictionResult {
     private Integer availableBikeStands;
     private LocalDateTime recordedAt;
 
+    private LocalDateTime forecastTime;
+
+    public LocalDateTime getForecastTime() {
+        return forecastTime;
+    }
+
+    public void setForecastTime(LocalDateTime forecastTime) {
+        this.forecastTime = forecastTime;
+    }
+
+
     public Long getId() {
         return id;
     }

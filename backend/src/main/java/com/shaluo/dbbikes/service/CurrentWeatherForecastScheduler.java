@@ -28,7 +28,7 @@ public class CurrentWeatherForecastScheduler {
         this.forecastRepository = forecastRepository;
     }
 
-    @Scheduled(fixedRate = 600000) // 每10分钟
+    @Scheduled(fixedRate = 3600000) // 每60分钟
     public void fetchForecast() {
 
         try {

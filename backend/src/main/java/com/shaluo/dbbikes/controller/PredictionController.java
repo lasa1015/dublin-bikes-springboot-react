@@ -22,9 +22,9 @@ public class PredictionController {
         return predictionRepository.findAll();
     }
 
-    // 获取指定车站的预测结果
-    @GetMapping("/{number}")
-    public PredictionResult getPredictionByNumber(@PathVariable int number) {
-        return predictionRepository.findByNumber(number).orElse(null);
+    // 获取某个车站的全部预测记录（按 forecastTime 升序）
+    @GetMapping("/station/{number}")
+    public List<PredictionResult> getPredictionsByStationNumber(@PathVariable int number) {
+        return predictionRepository.findByNumberOrderByForecastTimeAsc(number);
     }
 }

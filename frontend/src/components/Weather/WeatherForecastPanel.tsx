@@ -9,15 +9,23 @@ import { Chart } from 'react-google-charts';
 // 引入图表通用样式配置对象
 import { baseChartOptions } from './chartOptions';
 
+// 引入全局面板上下文，用于判断是否显示天气面板 + 控制关闭
+import { useLeftPanel } from '../../contexts/LeftPanelContext';
 
-// onClose 函数，由父组件传入，用于点击 "×" 时关闭面板
-const WeatherForecastPanel = ({ onClose }: { onClose: () => void }) => {
+const WeatherForecastPanel = () => {
+
+  // 从全局 context 获取当前面板状态 + 关闭方法
+  const { currentPanel, closePanel } = useLeftPanel();
 
   // 调用自定义 Hook，获取天气预报数组
   const forecastData = useForecast();
 
   // 只显示前 8 条天气预测数据（避免图表太挤）
+
   const displayedData = forecastData.slice(0, 8);
+
+  // 如果当前不是 weather 面板，就什么都不显示（保证互斥逻辑）
+  if (currentPanel !== 'weather') return null;
 
   // 如果数据为空或尚未加载完全，什么都不显示
   if (!forecastData || forecastData.length === 0) return null;
@@ -53,8 +61,8 @@ const WeatherForecastPanel = ({ onClose }: { onClose: () => void }) => {
   return (
     <div id="weather_more">
 
-      {/* 关闭按钮，点击时执行 onClose 函数 */}
-      <div className="close" onClick={onClose}>×</div>
+      {/* 关闭按钮，点击时执行 closePanel 函数 */}
+      <div className="close" onClick={closePanel}>×</div>
 
       {/* 天气图标区域 */}
       <div id="weather_condition">
@@ -85,7 +93,7 @@ const WeatherForecastPanel = ({ onClose }: { onClose: () => void }) => {
           chartType="LineChart"             // 图表类型：折线图
           data={tempChartData}              // 图表数据
           width="100%"                      // 图表宽度
-          height="100%" //  高度百分比自适应
+          height="100%"                     // 高度百分比自适应
           options={{
             ...baseChartOptions,            // 使用另一个文件写好的统一样式
             title: 'Temperature (°C)',      // 图表标题
@@ -100,11 +108,11 @@ const WeatherForecastPanel = ({ onClose }: { onClose: () => void }) => {
           chartType="LineChart"
           data={windChartData}
           width="100%"
-          height="100%" //  高度百分比自适应
+          height="100%"                     // 高度百分比自适应
           options={{
             ...baseChartOptions,
             title: 'Wind Speed (m/s)',
-            colors: ['#ff9966'],           // 折线颜色（橘色）
+            colors: ['#ff9966'],            // 折线颜色（橘色）
           }}
         />
       </div>

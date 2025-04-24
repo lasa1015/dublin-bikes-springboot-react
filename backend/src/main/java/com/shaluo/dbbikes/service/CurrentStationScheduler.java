@@ -32,7 +32,7 @@ public class CurrentStationScheduler {
         this.bikeRepository = bikeRepository;
     }
 
-    @Scheduled(fixedRate = 1800000) // 每 30 分钟抓一次（单位：毫秒）
+    @Scheduled(fixedRate = 600000) // 每 10 分钟抓一次（单位：毫秒）
     public void fetchStationData() {
 
         try {

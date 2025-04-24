@@ -6,12 +6,9 @@ import useWeather from './hooks/useWeather';
 // 引入自定义 Hook：用于从后端或 API 获取当前空气质量数据（例如 PM2.5）
 import useAirQuality from './hooks/useAirQuality';
 
-// 引入天气预报面板组件，用于显示未来一段时间的天气折线图
-import WeatherForecastPanel from './WeatherForecastPanel';
 
-// 引入 React 的 useState Hook，用于控制组件内部状态（是否显示天气预报）
-import { useState } from 'react';
-
+// 引入全局 LeftPanelContext 来控制天气预报面板的显示状态
+import { useLeftPanel } from '../../contexts/LeftPanelContext';
 
 const WeatherPanel = () => {
 
@@ -21,8 +18,8 @@ const WeatherPanel = () => {
   // 调用自定义 hook 获取当前空气质量
   const airQuality = useAirQuality();
 
-  // 变量：是否显示天气预报面板，初始为 false
-  const [showForecast, setShowForecast] = useState(false);
+  // 从全局 Context 获取面板状态和控制函数
+  const { currentPanel, openPanel, closePanel } = useLeftPanel();
 
   // * 如果当前天气数据 或 空气质量数据还没加载好，就什么都不渲染
   // * 因为 useWeather() 和 useAirQuality() 是异步获取数据的 hook，
@@ -48,9 +45,8 @@ const WeatherPanel = () => {
           />
         </div>
 
-
         <div id="weather_content">
-           {/* 风速、PM2.5*/}
+          {/* 风速、PM2.5 */}
           <div>Wind: {weather.windSpeed} m/s</div>
           <div>PM2.5: {airQuality.pm25} µg/m³</div>
 
@@ -58,20 +54,17 @@ const WeatherPanel = () => {
           <button
             id="weather_prediction_btn"
 
-            //* 点击按钮后，修改 showForecast 状态为 true，显示天气预报面板
-            onClick={() => setShowForecast(true)}
+            // 点击按钮后，打开天气预报面板（设置为 'weather'）。再次点击时关闭面板
+            onClick={() =>
+              currentPanel === 'weather' ? closePanel() : openPanel('weather')
+            }
+            
           >
             weather forecast
           </button>
         </div>
       </div>
-
-      {/* 如果 showForecast 为 true，就渲染天气预报折线图面板 */}
-      {showForecast && ( 
-
-        //* 把关闭函数 onClose 传给子组件，子组件调用这个函数就能关闭面板
-        <WeatherForecastPanel onClose={() => setShowForecast(false)} />
-      )}
+    
     </>
   );
 };

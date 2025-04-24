@@ -1,6 +1,6 @@
 // src/components/Map/GoogleMapContainer.tsx
 
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { GoogleMap, DirectionsRenderer } from '@react-google-maps/api';
 import { useRoute } from '../../contexts/RouteContext';
 import { mapStyle, defaultCenter, mapOptions } from './config/mapOptions';
@@ -8,22 +8,22 @@ import useDrawOverlayCircles from './hooks/useDrawOverlayCircles';
 import useRoutePlanner from './hooks/useRoutePlanner';
 
 import StationMarkers from './StationMarkers';
-import MLPredictionModal from './MLPredictionModal';
+import { useSelectedStation } from '../../contexts/SelectedStationContext';
 
-import { usePredictionModal } from '../../contexts/PredictionModalContext'; //  新增
+
+
 
 export default function GoogleMapContainer() {
 
   const mapRef = useRef<google.maps.Map | null>(null);
 
+
   useDrawOverlayCircles(mapRef);
 
   useRoutePlanner(mapRef);
 
-  const { selectedStation } = usePredictionModal();   // 只需要这一个
-  const showModal = !!selectedStation;                // 有站点就显示
-  
 
+  
   return (
     <>
       <GoogleMap
@@ -43,10 +43,7 @@ export default function GoogleMapContainer() {
         )}
       </GoogleMap>
 
-      {/* 弹窗统一控制 */}
-      {showModal && 
-        <MLPredictionModal />
-      }
+
     </>
   );
 }

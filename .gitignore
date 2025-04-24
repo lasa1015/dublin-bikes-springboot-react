@@ -4,11 +4,10 @@ project_log/
 node_modules/
 logs/
 
-
 venv/
 __pycache__/
 *.py[cod]
-*.pkl
+
 
 
 

@@ -47,8 +47,8 @@ public class CurrentAirQualityScheduler {
         this.objectMapper = new ObjectMapper();
     }
 
-    // 每隔 600,000 毫秒（也就是 10 分钟） 执行一次这个方法。
-    @Scheduled(fixedRate = 600000)
+    //  60 分钟 执行一次这个方法。
+    @Scheduled(fixedRate = 3600000)
     public void fetchAirQualityData() {
 
         try {

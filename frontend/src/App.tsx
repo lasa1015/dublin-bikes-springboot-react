@@ -17,6 +17,10 @@ import Legend from './components/Map/Legend';
 import { StationProvider } from './contexts/StationContext';
 import { SearchLocationProvider } from './contexts/SearchLocationContext';
 import { PredictionModalProvider } from './contexts/PredictionModalContext';
+import { SelectedStationProvider } from './contexts/SelectedStationContext';
+import { LeftPanelProvider } from './contexts/LeftPanelContext';
+import MLPredictionPanel from './components/Prediction/MLPredictionPanel';
+import WeatherForecastPanel from './components/Weather/WeatherForecastPanel';
 
 // App 是整个前端的主组件，负责组合和管理所有子组件
 export default function App() {
@@ -52,35 +56,25 @@ export default function App() {
   
   // 所有资源加载完成后，正式渲染页面内容
   return (
-    // 全局上下文提供器，包裹所有组件，提供路线选择功能
-    <RouteProvider>
-      {/* 图层显示状态的全局上下文提供器 */}
-      <OverlayProvider>
-
+<RouteProvider>
+  <OverlayProvider>
+    <LeftPanelProvider>
       <StationProvider>
+        <SelectedStationProvider>
+          <Header />
+          <ToggleOverlayButtons />
+          <WeatherPanel />
+          <JourneyPlanner />
+          <MLPredictionPanel />
+          <Legend />        
+  <GoogleMapContainer />
 
-     
-      <PredictionModalProvider>
-        <Header />
+          <WeatherForecastPanel/>
+        </SelectedStationProvider>
+      </StationProvider>
+    </LeftPanelProvider>
+  </OverlayProvider>
+</RouteProvider>
 
-
-        <ToggleOverlayButtons/>
-
-        <WeatherPanel />
-
-        {/* 传给 JourneyPlanner 组件一个名叫 onLocationSelect 的 prop，它的值是一个函数 setSearchLocation。*/}
-        <JourneyPlanner onLocationSelect={setSearchLocation} />
-
-      
-         <Legend />
-
-        {/* 把父组件状态变量传给 GoogleMapContainer 子组件使用 */}
-        <GoogleMapContainer searchLocation={searchLocation}
-        />
-        </PredictionModalProvider>
-       
-           </StationProvider>
-      </OverlayProvider>
-    </RouteProvider>
   );
 }
