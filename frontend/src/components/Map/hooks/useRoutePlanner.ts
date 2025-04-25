@@ -16,7 +16,6 @@ export default function useRoutePlanner(mapRef: React.RefObject<google.maps.Map 
     departureNumber,   // 出发站编号
     arrivalNumber,     // 到达站编号
     routeTrigger,      // 是否触发了路线规划（点击了 GO）
-    routeResult,       // 当前的路线结果（DirectionsResult 对象）
     setRouteResult,    // 用于设置路线结果的函数
   } = useRoute();
 

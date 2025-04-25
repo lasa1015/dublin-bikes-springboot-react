@@ -1,11 +1,11 @@
 // src/hooks/usePrediction.ts
 import { useEffect, useState } from 'react';
-import { CurrentStation } from '../contexts/StationContext';
+import { CurrentStation } from '../../contexts/StationContext';
 
 export interface PredictionResult {
   number: number;
   availableBikes: number;
-  availableStands: number;
+  availableBikeStands: number;
   forecastTime: string;
 }
 

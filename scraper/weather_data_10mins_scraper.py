@@ -1,16 +1,11 @@
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 import time
 import requests
 import pymysql
 import datetime
 from pymysql import Error
-from config import Config
+from config import Config  # ✅ 引入 config.py 里的配置类
 
-
-# Database configuration constants
+# 数据库配置
 DB_CONFIG = {
     'host': Config.DB_HOST,
     'user': Config.DB_USER,
@@ -19,7 +14,7 @@ DB_CONFIG = {
     'port': Config.DB_PORT
 }
 
-# OpenWeatherMap Current Weather API configuration
+# OpenWeatherMap Current Weather API 配置
 WEATHER_API_CONFIG = {
     'url': "http://api.openweathermap.org/data/2.5/weather",
     'params': {
@@ -30,13 +25,20 @@ WEATHER_API_CONFIG = {
     }
 }
 
-# Make a GET request to the weather API and return JSON response
+# 日志函数
+def event_log(event):
+    with open("event_log_weather.txt", "a") as file:
+        current_time = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
+        event_message = f"Event: {event} | Time: {current_time}\n"
+        file.write(event_message)
+
+# 获取天气数据
 def fetch_data(api_url, params):
     response = requests.get(api_url, params=params)
     response.raise_for_status()
     return response.json()
 
-# Establish connection to the MySQL database
+# 获取数据库连接
 def get_db_connection(config):
     try:
         conn = pymysql.connect(**config)
@@ -45,15 +47,17 @@ def get_db_connection(config):
         event_log(db_error)
         raise db_error
 
-# Insert a single weather record into the new table
+# 插入天气数据
 def insert_weather_data(conn, weather_data):
     with conn.cursor() as cursor:
         try:
-            insert_query = """INSERT INTO weather_data_10min 
-                        (location_id, longitude, latitude, weather_id, weather_main, weather_description, weather_icon, temp,
-                        feels_like, temp_min, temp_max, pressure, humidity, visibility, wind_speed, wind_deg, clouds, 
-                        data_timestamp)
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+            insert_query = """
+                INSERT INTO weather_data_10min (
+                    location_id, longitude, latitude, weather_id, weather_main, weather_description, weather_icon,
+                    temp, feels_like, temp_min, temp_max, pressure, humidity, visibility, wind_speed, wind_deg,
+                    clouds, data_timestamp
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """
             weather_main = weather_data['weather'][0]
             main_data = weather_data['main']
             wind_data = weather_data['wind']
@@ -71,14 +75,7 @@ def insert_weather_data(conn, weather_data):
             conn.rollback()
             raise insert_error
 
-# Log errors to a text file with timestamp
-def event_log(event):
-    with open("event_log_weather.txt", "a") as file:
-        current_time = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
-        event_message = f"Event: {event} | Time: {current_time}\n"
-        file.write(event_message)
-
-# Fetch and insert weather data every 60 minutes
+# 主程序，每10分钟执行一次
 def main():
     while True:
         try:
@@ -86,10 +83,9 @@ def main():
             db_conn = get_db_connection(DB_CONFIG)
             with db_conn:
                 insert_weather_data(db_conn, weather)
-            time.sleep(600)
         except Error as e:
             print(f"An error occurred: {e}")
-
+        time.sleep(600)  # 每10分钟运行一次
 
 if __name__ == "__main__":
     main()

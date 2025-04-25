@@ -64,7 +64,6 @@
   width: 70px; /* ✅ 固定 label 宽度 */
   /* text-align: right; */
   margin-right: 8px;
-  fib
   
 }
 
@@ -72,7 +71,7 @@
   flex: 1;            /* ✅ 占满剩余空间 */
   border: 1px solid #ccc;         
   border-radius: 2px;  
-  height: 30px;         /* ✅ 设置统一高度 */
+  height: 30px;       
   background-color: #f9f9f9;
   padding: 4px 8px;
   font-size: 14px;
@@ -90,5 +89,5 @@
 
 .chart-wrapper {
   flex: 1;
-  min-height: 200px;  /* ✅ 给一个最小高度，避免窗口小了图太扁 */
+  /* min-height: 200px;  ✅ 给一个最小高度，避免窗口小了图太扁 */
 }

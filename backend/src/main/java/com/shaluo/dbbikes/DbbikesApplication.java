@@ -16,7 +16,7 @@ public class DbbikesApplication {
 	public static void main(String[] args) {
 
 		// 加载 .env 文件
-		Dotenv dotenv = Dotenv.configure().load();
+		Dotenv dotenv = Dotenv.configure().directory("./backend") .load();
 
 		// 将变量设置到系统属性中，Spring Boot 才能识别 ${}
 		System.setProperty("DB_HOST", dotenv.get("DB_HOST"));

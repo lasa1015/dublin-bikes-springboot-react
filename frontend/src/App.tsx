@@ -1,12 +1,12 @@
 // 引入 React 中的 Hook，用于加载 Google Maps 脚本
 import { useJsApiLoader } from '@react-google-maps/api';
-import { useState } from 'react';
+
 
 // 引入全局路线上下文 Provider，用于管理用户选中的出发/到达站点
 import { RouteProvider } from './contexts/RouteContext'; 
 
 // 引入新抽离的图层状态上下文 Provider（负责管理 showBikesLayer / showStandsLayer）
-import { OverlayProvider, useOverlay } from './contexts/OverlayContext';
+import { OverlayProvider  } from './contexts/OverlayContext';
 
 import Header from './components/Header/Header';
 import WeatherPanel from './components/Weather/WeatherPanel';
@@ -15,8 +15,6 @@ import GoogleMapContainer from './components/Map/GoogleMapContainer';
 import ToggleOverlayButtons from './components/Map/ToggleOverlayButtons';
 import Legend from './components/Map/Legend';
 import { StationProvider } from './contexts/StationContext';
-import { SearchLocationProvider } from './contexts/SearchLocationContext';
-import { PredictionModalProvider } from './contexts/PredictionModalContext';
 import { SelectedStationProvider } from './contexts/SelectedStationContext';
 import { LeftPanelProvider } from './contexts/LeftPanelContext';
 import MLPredictionPanel from './components/Prediction/MLPredictionPanel';
@@ -39,9 +37,7 @@ export default function App() {
     libraries: ['places', 'geometry'],   // 指定额外加载哪些 Google Maps 模块（如地点搜索和路径几何计算）
   });
 
-  // searchLocation 表示用户在右下角搜索框中选中的地图位置（经纬度）
-  const [searchLocation, setSearchLocation] = useState<google.maps.LatLngLiteral | null>(null);
-  
+
 
 
 

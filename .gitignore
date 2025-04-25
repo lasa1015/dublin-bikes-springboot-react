@@ -1,13 +1,13 @@
 project_log/
-.env
 .git/
 node_modules/
 logs/
-
+.tar
+.env
 venv/
 __pycache__/
 *.py[cod]
-
+.pyc
 
 
 

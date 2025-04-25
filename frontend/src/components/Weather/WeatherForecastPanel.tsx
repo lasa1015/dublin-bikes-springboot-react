@@ -77,7 +77,7 @@ const WeatherForecastPanel = () => {
             {/* 天气图标 */}
             <img
               src={`https://openweathermap.org/img/wn/${item.weatherIcon}@2x.png`}
-              alt={item.weatherDescription}
+              alt={item.weatherIcon}
             />
 
             {/* 显示小时（例：14:00） */}

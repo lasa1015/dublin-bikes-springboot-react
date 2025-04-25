@@ -14,7 +14,7 @@ interface Props {
 const SelectedStationInfo = ({ openInfoWindow, setOpenInfoWindow }: Props) => {
 
   // 获取当前选中的车站
-  const { selectedStation, setSelectedStation } = useSelectedStation();
+  const { selectedStation } = useSelectedStation();
 
   // 获取路径规划状态
   const {

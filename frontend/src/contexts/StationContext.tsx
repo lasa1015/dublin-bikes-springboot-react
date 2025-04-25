@@ -17,7 +17,11 @@ export interface CurrentStation {
   availableBikes: number;
   availableBikeStands: number;
   capacity: number;
+  electricalBikes:number;
+  mechanicalBikes:number;
   name: string;
+  banking: boolean;
+
 }
 
 // 定义上下文的结构：包含一个 stations 数组

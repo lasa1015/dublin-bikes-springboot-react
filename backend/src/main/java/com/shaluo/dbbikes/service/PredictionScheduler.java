@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
@@ -35,8 +34,8 @@ public class PredictionScheduler {
         this.forecastRepository = forecastRepository;
     }
 
-    /** 每小时执行一次，延迟 15 s 让 Hibernate 先建表 */
-//    @Scheduled(fixedRate = 3600000)
+    // 每小时执行一次
+    @Scheduled(fixedRate = 3600000)
     public void fetchAndSavePredictions() {
 
         try {
