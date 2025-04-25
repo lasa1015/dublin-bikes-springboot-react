@@ -3,7 +3,60 @@ project_log/
 node_modules/
 logs/
 .tar
-.env
+.env*
+.github/
+name: Build and Push Docker Images
+
+on:
+  push:
+    branches:
+      - main   # 替换成你使用的分支名，比如 master 或 dev
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
+
+      - name: Build and push predictor image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./predictor
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/predictor:latest
+
+      - name: Build and push scraper image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./scraper
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/scraper:latest
+
 venv/
 __pycache__/
 *.py[cod]

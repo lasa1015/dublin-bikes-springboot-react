@@ -1,0 +1,34 @@
+services:
+
+  predictor:
+    image: dbbikes-predictor:latest
+    ports:
+      - "5000:5000"
+    networks:
+      - app-network
+    container_name: dbbikes-predictor
+
+  backend:
+    image: dbbikes-backend:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - predictor
+    environment:
+      - PREDICTOR_HOST=dbbikes-predictor
+    container_name: dbbikes-backend
+
+
+  frontend:
+    image: dbbikes-frontend:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+      - predictor
+    networks:
+      - app-network
+    container_name: dbbikes-frontend
+
+networks:
+  app-network:

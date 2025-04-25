@@ -15,8 +15,20 @@ public class DbbikesApplication {
 
 	public static void main(String[] args) {
 
-		// 加载 .env 文件
-		Dotenv dotenv = Dotenv.configure().directory("./backend") .load();
+		// 判断当前运行环境（容器中通常存在这个文件）
+		boolean inDocker = new java.io.File("/.dockerenv").exists();
+
+		Dotenv dotenv;
+		if (inDocker) {
+			// 容器内直接读取当前目录下 .env（WORKDIR 已设置成 /backend）
+			dotenv = Dotenv.configure().load();
+		} else {
+			// 本地开发时读取 backend 目录下的 .env
+			dotenv = Dotenv.configure()
+					.directory("./backend")
+					.filename(".env")
+					.load();
+		}
 
 		// 将变量设置到系统属性中，Spring Boot 才能识别 ${}
 		System.setProperty("DB_HOST", dotenv.get("DB_HOST"));

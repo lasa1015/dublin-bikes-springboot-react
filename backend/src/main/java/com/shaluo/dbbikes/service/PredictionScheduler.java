@@ -54,8 +54,18 @@ public class PredictionScheduler {
             List<ObjectNode> weatherBatch = toWeatherBatch(forecasts);
             logger.info("🚀 发送批量预测请求，共 {} 条天气数据", weatherBatch.size());
 
+            // 判断当前是在本地运行，还是容器中运行（默认本地为 localhost）
+            String predictorHost = System.getenv("PREDICTOR_HOST") != null
+                    ? System.getenv("PREDICTOR_HOST")
+                    : "localhost";
+
+            // 拼接出最终调用的 URL
+            String url = "http://" + predictorHost + ":5000/predict_batch";
+
+            // 调用 Python 预测服务
             JsonNode response = restTemplate.postForObject(
-                    "http://localhost:5000/predict_batch", weatherBatch, JsonNode.class);
+                    url, weatherBatch, JsonNode.class);
+
 
             if (response == null || response.isEmpty()) {
                 logger.error("❌ Python 服务未返回结果");

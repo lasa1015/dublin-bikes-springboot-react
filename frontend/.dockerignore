@@ -1,0 +1,5 @@
+# 忽略 node_modules（体积大、不需要）
+node_modules
+
+# 忽略本地构建产物（由 Dockerfile 构建时生成）
+dist
