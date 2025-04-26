@@ -1,9 +1,12 @@
 # 构建阶段
-FROM eclipse-temurin:17-jdk as builder
+FROM eclipse-temurin:17-jdk AS builder
 WORKDIR /backend
 
 # 注意：不要COPY .env了！
 COPY . .
+
+# 重要：赋予 mvnw 执行权限
+RUN chmod +x mvnw
 
 RUN ./mvnw clean package -DskipTests
 
