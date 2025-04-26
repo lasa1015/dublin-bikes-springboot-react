@@ -1,6 +1,8 @@
 ## Dublin Bikes Mapper – Smart Bike Monitoring & Prediction Platform
 
-### Website
+
+
+### Live Demo
 
 [http://dublinbikes.site](http://dublinbikes.site)
 
@@ -12,7 +14,7 @@ This project delivers a comprehensive web-based system for monitoring and predic
 
 To support model training, I first collected two months of historical data on bike usage and weather conditions. Live data was continuously collected from the JCDecaux API (for real-time bike station availability) and the OpenWeatherMap API (for current weather and forecasts). After processing and cleaning the collected data, I trained a Random Forest model using scikit-learn.
 
-The platform adopts a **microservices architecture**, with separate services for scraping, prediction, backend API handling, and frontend visualization. It is fully containerized with Docker, deployed on AWS EC2, and uses an AWS RDS MySQL database for persistent storage. CI/CD automation is managed via GitHub Actions.
+The platform adopts a microservices architecture, with separate services for scraper, predictor, backend and frontend. It is fully containerized with Docker, deployed on AWS EC2, and uses an AWS RDS MySQL database for persistent storage. CI/CD automation is managed via GitHub Actions.
 
 ------
 
@@ -30,11 +32,13 @@ The platform adopts a **microservices architecture**, with separate services for
 
 ### System Architecture
 
+<img src="docs/images/image-20250426232046623.png" alt="image-20250426232046623" align="left" style="zoom:33%;" />
+
 The system adopts a microservices-based architecture, consisting of the following independent services:
 
-- **Scraper Service** (Python): Periodically collects live station and weather data via the JCDecaux and OpenWeatherMap APIs and stores it into the database.
-- **Predictor Service** (Python + Flask): Hosts the trained Random Forest model and provides real-time prediction endpoints.
-- **Backend API Service** (Spring Boot): Exposes RESTful APIs, manages business logic, and interacts with the database and prediction service.
+- **Scraper Service** (Python): Periodically collects historical station and weather data from the JCDecaux and OpenWeatherMap APIs. Designed as an independent service to support machine learning model training, it can be started, stopped, or restarted without impacting other system components.
+- **Predictor Service** (Python + Flask): Hosts the trained Random Forest model and provides real-time prediction endpoints. As the model is developed in Python, this service is independently implemented with Flask and Python to ensure compatibility and efficient model serving.
+- **Backend Service** (Spring Boot): Periodically collects real-time station and weather data, stores it in the database, and provides RESTful APIs to the frontend. It also retrieves machine learning predictions from the Predictor Service, acting as the central coordinator between different system components.
 - **Frontend Service** (React + Vite): Visualizes live station data, weather information, and prediction results using Google Maps and Google Charts.
 
 Each service runs in its own Docker container, orchestrated with Docker Compose for simplified deployment, scaling, and maintenance
@@ -42,27 +46,6 @@ Each service runs in its own Docker container, orchestrated with Docker Compose 
 In addition to the services, the platform relies on a centralized database component:
 
 - **AWS RDS MySQL**: Provides reliable and scalable persistent storage for all application data.
-
----
-
-###  Folder Structure
-
-```
-dbbikes/
-├── app/
-│   ├── ml/                   # Scripts for applying ML models to generate predictions
-│   ├── ML_models/            # Saved ML model files (.joblib)
-│   ├── scraper/              # Data scrapers for weather, air quality, stations etc.
-│   ├── static/               # Front-end static files (CSS, JS, images)
-│   ├── templates/            # HTML templates for Flask rendering
-│   ├── app.py   。             # Main Flask application entry point
-│   ├── config.py             # Configuration loader from .env
-│   └── .env                  # Environment variables (excluded from Git)
-├── notebooks/                # Jupyter notebooks used for ML model training and preparation
-├── requirements.txt          # Python dependency list
-├── .gitignore                # Git ignore rules
-└── README.md                 # Project overview and instructions
-```
 
 ---
 
@@ -80,15 +63,15 @@ Upon loading the website, all Dublin bike stations are displayed on the map, pro
 
 #### **● Weather forecast feature**
 
-The top-left widget displays current weather conditions. Clicking it reveals 24-hour forecast charts for temperature and wind speed.
+The top-left widget displays current weather conditions. Clicking the button on it  reveals 24-hour forecast charts for temperature and wind speed.
 
 ![image-20250426215859705](docs/images/image-20250426215859705.png)
 
 
 
-#### ● **Machine Learning Prediction feature for Bikes and Stands**
+#### ● **AI forecast feature for bikes and stands**
 
-When users click the “ML Availability Prediction” button on a selected station, the system displays bar charts forecasting the number of available bikes and stands over the next four days, helping users plan future trips.
+When users click the “AI Forecast” button on a selected station, the system displays bar charts forecasting the number of available bikes and stands over the next four days. Users can select different stations and dates from the left panel to view the forecasted availability of bikes and stands, helping them plan future trips more effectively.
 
 ![image-20250426220001780](docs/images/image-20250426220001780.png)
 
@@ -96,7 +79,7 @@ When users click the “ML Availability Prediction” button on a selected stati
 
 #### **● Real-Time Bike & Stand Distribution**
 
-Users can toggle between "Bikes Avail" and "Stands Avail" views to display the real-time availability of bikes or bike stands across all stations. Availability is represented by colored circles on the map, where size indicates quantity and color reflects availability levels. A legend in the top-left corner provides reference.
+Users can toggle between "Bikes Map" and "Stands Map" buttons to display the real-time availability of bikes or bike stands across all stations. Availability is represented by colored circles on the map, where size indicates quantity and color reflects availability levels. A legend in the top-right corner provides reference.
 
 ![image-20250426220032593](docs/images/image-20250426220032593.png)
 
