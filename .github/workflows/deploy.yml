@@ -36,14 +36,18 @@ jobs:
           context: ./backend             # 指定 Dockerfile 所在路径
           push: true                     # 自动推送到 Docker Hub
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest
+          platforms: linux/arm64   #  打 arm64 镜像了
 
       # 构建并推送 frontend 镜像
       - name: Build and push frontend image
         uses: docker/build-push-action@v5
+        env:
+          VITE_GOOGLE_MAPS_API_KEY: ${{ secrets.VITE_GOOGLE_MAPS_API_KEY }}  #前端注入github secret设置的环境变量
         with:
           context: ./frontend
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
+          platforms: linux/arm64   #  打 arm64 镜像了
 
       # 构建并推送 predictor 镜像
       - name: Build and push predictor image
@@ -52,6 +56,7 @@ jobs:
           context: ./predictor
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/predictor:latest
+          platforms: linux/arm64   #  打 arm64 镜像了
 
       # 构建并推送 scraper 镜像
       - name: Build and push scraper image
@@ -60,3 +65,4 @@ jobs:
           context: ./scraper
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/scraper:latest
+          platforms: linux/arm64   #  打 arm64 镜像了

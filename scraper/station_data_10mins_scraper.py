@@ -4,7 +4,7 @@ import pymysql
 import datetime
 import traceback
 from pymysql import Error
-from config import Config  # ✅ 引入配置类
+from config import Config
 
 # 数据库配置
 DB_CONFIG = {
@@ -24,17 +24,16 @@ API_CONFIG = {
     }
 }
 
-# 日志函数
-def log(msg):
-    timestamp = datetime.datetime.now().strftime("[%Y-%m-%d %H:%M:%S]")
-    line = f"{timestamp} {msg}"
-    print(line)
-    with open("scraper.log", "a") as f:
-        f.write(line + "\n")
-        f.flush()
+# 日志函数（控制台+文件）
+def log(message):
+    timestamp = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
+    formatted_message = f"[{timestamp}] {message}"
+    print(formatted_message)
+    with open("station_data_10mins.log", "a", encoding="utf-8") as f:
+        f.write(formatted_message + "\n")
 
 # 获取站点数据
-def load_data(api_url, params):
+def fetch_stations(api_url, params):
     response = requests.get(api_url, params=params, timeout=10)
     response.raise_for_status()
     return response.json()
@@ -43,9 +42,10 @@ def load_data(api_url, params):
 def get_db_connection(config):
     return pymysql.connect(**config)
 
-# 插入单条站点数据
-def insert_availability_data(cursor, station):
+# 插入一条站点数据
+def insert_station(cursor, station):
     total_avail = station.get("totalStands", {}).get("availabilities", {})
+
     insert_query = """
         INSERT INTO bike_data_10min (
             number, status, last_update, connected, overflow, banking, bonus,
@@ -82,21 +82,20 @@ def insert_availability_data(cursor, station):
         total_avail.get("electricalBikes")
     )
 
-    log(f"Inserting station #{station.get('number')}: bikes={total_avail.get('bikes')}, stands={total_avail.get('stands')}, last_update={last_update}")
     cursor.execute(insert_query, values)
 
 # 插入所有站点数据
-def insert_data_to_db(stations, db_config):
+def insert_all_stations(stations, db_config):
     connection = None
     try:
         connection = get_db_connection(db_config)
         with connection.cursor() as cursor:
             for station in stations:
-                insert_availability_data(cursor, station)
+                insert_station(cursor, station)
         connection.commit()
-        log("✅ Database write successful.")
-    except pymysql.Error as db_error:
-        log(f"❌ Database error: {db_error}")
+        log("Successfully inserted all station data into database.")
+    except Error as db_error:
+        log(f"❌ Database error while inserting station data: {db_error}")
         traceback.print_exc()
         if connection:
             connection.rollback()
@@ -104,18 +103,18 @@ def insert_data_to_db(stations, db_config):
         if connection:
             connection.close()
 
-# 主循环
+# 主程序
 def main():
     while True:
         try:
-            log("Start scraping...")
-            stations = load_data(API_CONFIG['url'], API_CONFIG['params'])
-            log(f"Fetched {len(stations)} stations.")
-            insert_data_to_db(stations, DB_CONFIG)
+            log("Starting station data scraping...")
+            stations = fetch_stations(API_CONFIG['url'], API_CONFIG['params'])
+            log(f"Successfully fetched {len(stations)} stations.")
+            insert_all_stations(stations, DB_CONFIG)
+            log("Completed one station data cycle. Sleeping for 10 minutes.")
         except Exception as e:
-            log(f"❌ Unexpected error: {e}")
+            log(f"❌ Unexpected error during station data process: {e}")
             traceback.print_exc()
-        log("Sleeping for 10 minutes.\n")
         time.sleep(600)
 
 if __name__ == "__main__":

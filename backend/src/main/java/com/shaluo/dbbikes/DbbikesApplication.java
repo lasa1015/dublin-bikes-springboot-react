@@ -15,38 +15,32 @@ public class DbbikesApplication {
 
 	public static void main(String[] args) {
 
-		// 判断当前运行环境（容器中通常存在这个文件）
-		boolean inDocker = new java.io.File("/.dockerenv").exists();
+		// 检查系统环境变量是否存在关键字段
+		// 本地靠 .env 文件，生产靠 Docker Compose 注入环境变量
+		if (System.getenv("DB_HOST") == null) {
 
-		Dotenv dotenv;
-		if (inDocker) {
-			// 容器内直接读取当前目录下 .env（WORKDIR 已设置成 /backend）
-			dotenv = Dotenv.configure().load();
-		} else {
-			// 本地开发时读取 backend 目录下的 .env
-			dotenv = Dotenv.configure()
-					.directory("./backend")
-					.filename(".env")
+			// 如果系统变量没有，说明是本地开发，需要手动加载 .env 文件
+			Dotenv dotenv = Dotenv.configure()
+					.directory("./backend") // 指定本地 .env 文件所在目录
 					.load();
+
+			// 将变量设置到系统属性中，Spring Boot 才能识别 ${}
+			System.setProperty("DB_HOST", dotenv.get("DB_HOST"));
+			System.setProperty("DB_PORT", dotenv.get("DB_PORT"));
+			System.setProperty("DB_NAME", dotenv.get("DB_NAME"));
+			System.setProperty("DB_USERNAME", dotenv.get("DB_USERNAME"));
+			System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
+
+			// 从.env中获取 openweather 的 api
+			System.setProperty("openweather.api.key", dotenv.get("OPENWEATHER_API_KEY"));
+
+			// 从.env中获取 jcdecaux 的 api
+			System.setProperty("jcdecaux.api.key", dotenv.get("JCDECAUX_API_KEY"));
 		}
-
-		// 将变量设置到系统属性中，Spring Boot 才能识别 ${}
-		System.setProperty("DB_HOST", dotenv.get("DB_HOST"));
-		System.setProperty("DB_PORT", dotenv.get("DB_PORT"));
-		System.setProperty("DB_NAME", dotenv.get("DB_NAME"));
-		System.setProperty("DB_USERNAME", dotenv.get("DB_USERNAME"));
-		System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
-
-		// 从.env中获取 openweather 的 api
-		System.setProperty("openweather.api.key", dotenv.get("OPENWEATHER_API_KEY"));
-
-		// 从.env中获取 jcdecaux 的 api
-		System.setProperty("jcdecaux.api.key", dotenv.get("JCDECAUX_API_KEY"));
 
 		// 启动 Spring Boot 应用的标准入口，会初始化 Spring 容器、执行自动配置、启动 Web 服务、加载 Bean 等，是整个项目“动起来”的核心命令。
 		// args 接收你在启动时传入的命令行参数，例如：java -jar app.jar --server.port=8085
 		// Spring Boot 会自动识别这些参数，并加载到 Environment 中（可以用 @Value、application.properties 访问）
 		SpringApplication.run(DbbikesApplication.class, args);
 	}
-
 }

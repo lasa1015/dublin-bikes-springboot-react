@@ -1,34 +1,69 @@
 services:
 
   predictor:
-    image: dbbikes-predictor:latest
+    image: lasa1015/dbbikes-predictor:latest
+    container_name: dbbikes-predictor
     ports:
       - "5000:5000"
     networks:
-      - app-network
-    container_name: dbbikes-predictor
+      - dbbikes-network
+    restart: always
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   backend:
-    image: dbbikes-backend:latest
+    image: lasa1015/dbbikes-backend:latest
+    container_name: dbbikes-backend
+    env_file:
+      - ./backend/.env.prod
     ports:
       - "8080:8080"
     depends_on:
       - predictor
-    environment:
-      - PREDICTOR_HOST=dbbikes-predictor
-    container_name: dbbikes-backend
+    networks:
+      - dbbikes-network
+    restart: always
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 
   frontend:
-    image: dbbikes-frontend:latest
+    image: lasa1015/dbbikes-frontend:latest
+    container_name: dbbikes-frontend
     ports:
       - "80:80"
     depends_on:
       - backend
       - predictor
     networks:
-      - app-network
-    container_name: dbbikes-frontend
+      - dbbikes-network
+    restart: always
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  scraper:
+    image: lasa1015/dbbikes-scraper:latest
+    container_name: dbbikes-scraper
+    env_file:
+      - ./scraper/.env.prod
+    networks:
+      - dbbikes-network
+    restart: on-failure
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
 
 networks:
-  app-network:
+  dbbikes-network:

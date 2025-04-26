@@ -4,7 +4,6 @@ WORKDIR /app
 
 # 拷贝代码和环境变量文件
 COPY . .
-COPY .env .env
 
 # 安装依赖
 RUN pip install --no-cache-dir -r requirements.txt
