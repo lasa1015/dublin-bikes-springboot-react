@@ -6,6 +6,7 @@ logs/
 .env*
 venv/
 dist/
+*.iodraw
 
 
 __pycache__/

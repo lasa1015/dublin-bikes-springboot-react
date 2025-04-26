@@ -6,7 +6,11 @@ on:
   push:
     branches:
       - main   # 你也可以改成 dev 或其他分支名
-
+    paths:
+      - 'frontend/**'
+      - 'backend/**'
+      - 'predictor/**'
+      - 'scraper/**'
 jobs:
   build-and-push:       # 作业名称，可以随便起
     runs-on: ubuntu-latest   # 指定 GitHub 提供的运行环境（Ubuntu）
