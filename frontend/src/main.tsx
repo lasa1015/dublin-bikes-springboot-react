@@ -10,6 +10,8 @@ import App from './App.tsx';
 // 导入全局样式文件，控制页面的整体样式
 import './index.css';
 
+// 屏蔽 console.log 的代码
+console.log = () => {};
 
 // 创建一个 React 根节点，并将 <App /> 挂载到 HTML 中 id 为 'root' 的元素上
 // .render(...) 把你写的 React 组件渲染到这个根节点中
