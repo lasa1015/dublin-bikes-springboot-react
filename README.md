@@ -32,7 +32,7 @@ The platform adopts a microservices architecture, with separate services for scr
 
 ### System Architecture
 
-<img src="docs/images/image-20250426232046623.png" alt="image-20250426232046623" align="left" style="zoom:33%;" />
+<img src="docs/images/image-20250426232559870.png" alt="image-20250426232559870" style="zoom:30%;" />
 
 The system adopts a microservices-based architecture, consisting of the following independent services:
 
