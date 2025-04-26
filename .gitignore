@@ -5,7 +5,7 @@ logs/
 .tar
 .env*
 venv/
-
+dist/
 
 
 __pycache__/
