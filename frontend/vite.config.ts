@@ -28,14 +28,4 @@ export default defineConfig({
     },
   },
 
-  // 新增构建优化配置：构建时去除 console.log 和 debugger
-  build: {
-    sourcemap: false,  // 打包时不生成 .map 文件,浏览器控制台也无法反查源代码
-    terserOptions: {
-      compress: {
-        drop_console: true,    // 删除所有 console.log / console.info / console.debug（但是保留 console.error 和 console.warn）
-        drop_debugger: true,   // 删除所有 debugger 语句
-      },
-    },
-  },
 });
