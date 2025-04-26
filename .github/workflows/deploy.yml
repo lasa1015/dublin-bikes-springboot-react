@@ -35,7 +35,7 @@ jobs:
         with:
           context: ./backend             # 指定 Dockerfile 所在路径
           push: true                     # 自动推送到 Docker Hub
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/dbbikes-backend:latest
           platforms: linux/arm64   #  打 arm64 镜像了
 
       # 构建并推送 frontend 镜像
@@ -46,7 +46,7 @@ jobs:
         with:
           context: ./frontend
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/dbbikes-frontend:latest
           platforms: linux/arm64   #  打 arm64 镜像了
 
       # 构建并推送 predictor 镜像
@@ -55,7 +55,7 @@ jobs:
         with:
           context: ./predictor
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/predictor:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/dbbikes-predictor:latest
           platforms: linux/arm64   #  打 arm64 镜像了
 
       # 构建并推送 scraper 镜像
@@ -64,5 +64,5 @@ jobs:
         with:
           context: ./scraper
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/scraper:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/dbbikes-scraper:latest
           platforms: linux/arm64   #  打 arm64 镜像了
