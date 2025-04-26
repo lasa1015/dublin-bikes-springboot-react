@@ -9,7 +9,7 @@ export const mapOptions: google.maps.MapOptions = {
 
   disableDefaultUI: true,      // 禁用所有默认 UI 控件（如缩放按钮、地图类型切换按钮等）
 
-  zoomControl: true,           // 单独启用“缩放控件”（因为默认 UI 被禁了，这里手动打开缩放功能）
+  zoomControl: false,           // 单独启用“缩放控件”（因为默认 UI 被禁了，这里手动打开缩放功能）
 
   gestureHandling: 'greedy',   // 鼠标/触控手势响应设置为 "贪婪模式"，意思是滚轮滚动地图会立即响应，不会被页面滚动打断
 
