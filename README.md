@@ -21,25 +21,26 @@ The platform adopts a microservices architecture, with separate services for scr
 ###  Tech Stack
 
 - **Frontend**: React + Vite + TypeScript (Google Maps Platform, Google Charts)
-- **Backend**: Spring Boot (Java, RESTful API)
+- **Backend**: Spring Boot (Java, RESTful API) + Maven (build & dependency)
 - **Scrapers**: Python (requests, schedule, dotenv)
-- **Model Training**: Python (scikit-learn Random Forest, Jupyter notebooks / scripts for model training)
-- **Predictor**: Python + Flask microservice (serving the trained Random Forest model)
+- **Predictor**: Python + Flask  (serving the trained Random Forest model)
 - **Database**: AWS RDS (MySQL)
 - **Deployment & Infrastructure**: Docker, Docker Compose, Nginx, GitHub Actions (CI/CD), AWS EC2 (Hosting t4g.small), Namecheap (Domain & DNS)
+- **Model Training**: Python (scikit-learn Random Forest, Jupyter notebooks / scripts for model training)
 
 ---
 
 ### System Architecture
 
-<img src="docs/images/image-20250426232801130.png" alt="image-20250426232801130" style="zoom:30%;" />
+<img src="docs/images/image-20250427105216834.png" alt="image-20250427105216834" style="zoom:32%;" />
 
 The system adopts a microservices-based architecture, consisting of the following independent services:
 
-- **Scraper Service** (Python): Periodically collects historical station and weather data from the JCDecaux and OpenWeatherMap APIs. Designed as an independent service to support machine learning model training, it can be started, stopped, or restarted without impacting other system components.
-- **Predictor Service** (Python + Flask): Hosts the trained Random Forest model and provides real-time prediction endpoints. As the model is developed in Python, this service is independently implemented with Flask and Python to ensure compatibility and efficient model serving.
-- **Backend Service** (Spring Boot): Periodically collects real-time station and weather data, stores it in the database, and provides RESTful APIs to the frontend. It also retrieves machine learning predictions from the Predictor Service, acting as the central coordinator between different system components.
 - **Frontend Service** (React + Vite): Visualizes live station data, weather information, and prediction results using Google Maps and Google Charts.
+- **Backend Service** (Spring Boot): Periodically collects real-time station and weather data, stores it in the database, and provides RESTful APIs to the frontend. It also retrieves machine learning predictions from the Predictor Service, acting as the central coordinator between different system components.
+
+- **Predictor Service** (Python + Flask): Hosts the trained Random Forest model and provides real-time prediction endpoints. As the model is developed in Python, this service is independently implemented with Flask and Python to ensure compatibility and efficient model serving.
+- **Scraper Service** (Python Scripts): Periodically collects historical station and weather data from the JCDecaux and OpenWeatherMap APIs. Designed as an independent service to support machine learning model training, it can be started, stopped, or restarted without impacting other system components.
 
 Each service runs in its own Docker container, orchestrated with Docker Compose for simplified deployment, scaling, and maintenance
 
@@ -53,9 +54,15 @@ In addition to the services, the platform relies on a centralized database compo
 
 #### **● Displaying all the bike stations in Dublin**
 
-Upon loading the website, all Dublin bike stations are displayed on the map, providing users with a clear overview of their distribution. Clicking on a station marker reveals an info box with key details, including station name and number, status, total capacity, real-time bike and stand availability, credit card support.
+Upon loading the website, all Dublin bike stations are displayed on the map, providing users with a clear overview of their distribution. 
 
-![image-20250426215749026](docs/images/image-20250426215749026.png)
+![。地图上显示，然后第2条是那个点击赞之后会那个](docs/images/image-20250426215749026.png)
+
+
+
+#### ● Station Info Box on Click
+
+Clicking on a station marker reveals an info box with key details, including station name and number, status, total capacity, real-time bike and stand availability, credit card support.
 
 ![image-20250426215822921](docs/images/image-20250426215822921.png)
 
