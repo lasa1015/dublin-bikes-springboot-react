@@ -3,7 +3,8 @@ personal_notes/
 node_modules/
 logs/
 .tar
-.env*
+*.env
+*.env.prod
 venv/
 dist/
 *.iodraw
