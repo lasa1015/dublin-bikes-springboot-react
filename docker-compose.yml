@@ -1,7 +1,6 @@
 services:
-
   predictor:
-    image: lasa1015/dbbikes-predictor:latest
+    image: ${PREDICTOR_IMAGE}
     container_name: dbbikes-predictor
     ports:
       - "5000:5000"
@@ -15,7 +14,7 @@ services:
         max-file: "3"
 
   backend:
-    image: lasa1015/dbbikes-backend:latest
+    image: ${BACKEND_IMAGE}
     container_name: dbbikes-backend
     env_file:
       - ./backend/.env.prod
@@ -32,9 +31,8 @@ services:
         max-size: "10m"
         max-file: "3"
 
-
   frontend:
-    image: lasa1015/dbbikes-frontend:latest
+    image: ${FRONTEND_IMAGE}
     container_name: dbbikes-frontend
     ports:
       - "80:80"
@@ -51,7 +49,7 @@ services:
         max-file: "3"
 
   scraper:
-    image: lasa1015/dbbikes-scraper:latest
+    image: ${SCRAPER_IMAGE}
     container_name: dbbikes-scraper
     env_file:
       - ./scraper/.env.prod
@@ -63,7 +61,6 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-
 
 networks:
   dbbikes-network:
