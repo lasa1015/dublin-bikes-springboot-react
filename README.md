@@ -39,7 +39,7 @@ The system adopts a microservices-based architecture, consisting of the followin
 - **Frontend Service** (React + Vite): Visualizes live station data, weather information, and prediction results using Google Maps and Google Charts.
 - **Backend Service** (Spring Boot): Periodically collects real-time station and weather data, stores it in the database, and provides RESTful APIs to the frontend. It also retrieves machine learning predictions from the Predictor Service, acting as the central coordinator between different system components.
 
-- **Predictor Service** (Python + Flask): Hosts the trained Random Forest model and provides real-time prediction endpoints. As the model is developed in Python, this service is independently implemented with Flask and Python to ensure compatibility and efficient model serving.
+- **Predictor Service** (Python + Flask): Hosts the trained Random Forest model and provides real-time prediction endpoints. Considering that the model may be updated frequently, this service is designed as an independent module, implemented with Flask and Python to ensure both model compatibility and flexible maintenance.
 - **Scraper Service** (Python Scripts): Periodically collects historical station and weather data from the JCDecaux and OpenWeatherMap APIs. Designed as an independent service to support machine learning model training, it can be started, stopped, or restarted without impacting other system components.
 
 Each service runs in its own Docker container, orchestrated with Docker Compose for simplified deployment, scaling, and maintenance
@@ -98,3 +98,8 @@ Users can select any two bike stations — one as the departure point and one as
 
 ![image-20250426220136418](docs/images/image-20250426220136418.png)
 
+------
+
+### License
+
+This project is licensed under the CC BY-NC-ND 4.0 License. See the [LICENSE](./LICENSE) file for details.
