@@ -56,7 +56,7 @@ In addition to the services, the platform relies on a centralized database compo
 
 Upon loading the website, all Dublin bike stations are displayed on the map, providing users with a clear overview of their distribution. 
 
-![。地图上显示，然后第2条是那个点击赞之后会那个](docs/images/image-20250426215749026.png)
+<img src="docs/images/image-20250426215749026.png" alt="Image with shadow" style="box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); border: none;">
 
 
 
@@ -64,7 +64,7 @@ Upon loading the website, all Dublin bike stations are displayed on the map, pro
 
 Clicking on a station marker reveals an info box with key details, including station name and number, status, total capacity, real-time bike and stand availability, credit card support.
 
-![image-20250426215822921](docs/images/image-20250426215822921.png)
+<img src="docs/images/image-20250426215822921.png" alt="Image with shadow" style="box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); border: none;">
 
 
 
@@ -72,7 +72,7 @@ Clicking on a station marker reveals an info box with key details, including sta
 
 The top-left widget displays current weather conditions. Clicking the button on it  reveals 24-hour forecast charts for temperature and wind speed.
 
-![image-20250426215859705](docs/images/image-20250426215859705.png)
+<img src="docs/images/image-20250426215859705.png" alt="Image with shadow" style="box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); border: none;">
 
 
 
@@ -80,7 +80,7 @@ The top-left widget displays current weather conditions. Clicking the button on 
 
 When users click the “AI Forecast” button on a selected station, the system displays bar charts forecasting the number of available bikes and stands over the next four days. Users can select different stations and dates from the left panel to view the forecasted availability of bikes and stands, helping them plan future trips more effectively.
 
-![image-20250426220001780](docs/images/image-20250426220001780.png)
+<img src="docs/images/image-20250426220001780.png" alt="Image with shadow" style="box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); border: none;">
 
 
 
@@ -88,15 +88,15 @@ When users click the “AI Forecast” button on a selected station, the system 
 
 Users can toggle between "Bikes Map" and "Stands Map" buttons to display the real-time availability of bikes or bike stands across all stations. Availability is represented by colored circles on the map, where size indicates quantity and color reflects availability levels. A legend in the top-right corner provides reference.
 
-![image-20250426220032593](docs/images/image-20250426220032593.png)
+<img src="docs/images/image-20250426220032593.png" alt="Image with shadow" style="box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); border: none;">
 
-![image-20250426220049200](docs/images/image-20250426220049200.png)
+
 
 #### **● Route Planning Between Stations**
 
 Users can select any two bike stations — one as the departure point and one as the destination — to generate a suggested cycling route between them. 
 
-![image-20250426220136418](docs/images/image-20250426220136418.png)
+<img src="docs/images/image-20250426220136418.png" alt="Image with shadow" style="box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); border: none;">
 
 ------
 
