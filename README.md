@@ -32,7 +32,7 @@ The platform adopts a microservices architecture, with separate services for scr
 
 ### System Architecture
 
-![image-20250504221808701](docs/images/image-20250504221808701.png)
+![image-20250504222149642](docs/images/image-20250504222149642.png)
 
 The system adopts a microservices-based architecture and is deployed across **two EC2 nodes**. All services are containerized using Docker and orchestrated with Docker Compose. Each node runs an instance of **Watchtower**, automatically restarts renewed containers. 
 
