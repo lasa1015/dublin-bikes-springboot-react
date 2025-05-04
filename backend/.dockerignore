@@ -1,5 +1,5 @@
 .env
-.env.prod
+../docker/single-node/backend/.env.prod
 target/
 .dockerignore
 Dockerfile

@@ -38,6 +38,7 @@ public class DbbikesApplication {
 			System.setProperty("jcdecaux.api.key", dotenv.get("JCDECAUX_API_KEY"));
 		}
 
+
 		// 启动 Spring Boot 应用的标准入口，会初始化 Spring 容器、执行自动配置、启动 Web 服务、加载 Bean 等，是整个项目“动起来”的核心命令。
 		// args 接收你在启动时传入的命令行参数，例如：java -jar app.jar --server.port=8085
 		// Spring Boot 会自动识别这些参数，并加载到 Environment 中（可以用 @Value、application.properties 访问）

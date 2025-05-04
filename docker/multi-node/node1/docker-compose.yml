@@ -1,0 +1,18 @@
+services:
+  backend:
+    image: ${BACKEND_IMAGE}
+    container_name: dbbikes-backend
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./backend/.env.prod
+    restart: always
+
+  frontend:
+    image: ${FRONTEND_IMAGE}
+    container_name: dbbikes-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: always
