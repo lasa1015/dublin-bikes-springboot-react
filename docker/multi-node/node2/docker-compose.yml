@@ -1,0 +1,14 @@
+services:
+  predictor:
+    image: ${PREDICTOR_IMAGE}
+    container_name: dbbikes-predictor
+    ports:
+      - "5000:5000"
+    restart: always
+
+  scraper:
+    image: ${SCRAPER_IMAGE}
+    container_name: dbbikes-scraper
+    env_file:
+      - ./scraper/.env.prod
+    restart: on-failure

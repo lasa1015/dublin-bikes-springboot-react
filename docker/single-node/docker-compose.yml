@@ -17,7 +17,7 @@ services:
     image: ${BACKEND_IMAGE}
     container_name: dbbikes-backend
     env_file:
-      - ./backend/.env.prod
+      - ../backend/.env.prod
     ports:
       - "8080:8080"
     depends_on:
