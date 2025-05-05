@@ -14,7 +14,7 @@ This project delivers a comprehensive web-based system for monitoring and predic
 
 To support model training, I first collected two months of historical data on bike usage and weather conditions. Live data was continuously collected from the JCDecaux API (for real-time bike station availability) and the OpenWeatherMap API (for current weather and forecasts). After processing and cleaning the collected data, I trained a Random Forest model using scikit-learn.
 
-The platform adopts a microservices architecture, with separate services for scraper, predictor, backend and frontend. It is fully containerized with Docker, deployed on AWS EC2, and uses an AWS RDS MySQL database for persistent storage. CI/CD automation is managed via GitHub Actions.
+The platform adopts a microservices architecture, with decoupled services for scraping, prediction, backend coordination, and frontend presentation. These services are fully containerized with Docker and distributed across two AWS EC2 instances, enabling isolated deployment and independent scaling. Persistent data is stored in an AWS RDS MySQL database, which is securely accessed by all nodes. CI/CD automation is implemented via GitHub Actions to streamline image building and deployment.
 
 ------
 
@@ -34,7 +34,7 @@ The platform adopts a microservices architecture, with separate services for scr
 
 ![image-20250504222149642](docs/images/image-20250504222149642.png)
 
-The system adopts a microservices-based architecture and is deployed across **two EC2 nodes**. All services are containerized using Docker and orchestrated with Docker Compose. Each node runs an instance of **Watchtower**, automatically restarts renewed containers. 
+The system adopts a microservices-based architecture and is deployed across **two EC2 nodes**.  Both EC2 instances are located within the same **Availability Zone**, **VPC**, and **subnet**, ensuring low-latency, high-bandwidth private communication between services. All services are containerized using Docker and orchestrated with Docker Compose. Each node runs an instance of **Watchtower**, which automatically restarts containers when updated images are detected.
 
 ##### Node 1 — EC2 `t4g.small`
 
