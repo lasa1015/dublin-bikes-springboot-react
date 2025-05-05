@@ -33,10 +33,25 @@ def log(message):
         f.write(formatted_message + "\n")
 
 # 获取站点数据
+# 获取站点数据（新增完整异常处理）
 def fetch_stations(api_url, params):
-    response = requests.get(api_url, params=params, timeout=10)
-    response.raise_for_status()
-    return response.json()
+    try:
+        response = requests.get(api_url, params=params, timeout=10)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.Timeout:
+        log("⏰ TimeoutError: 请求超时，未能获取站点数据。")
+    except requests.exceptions.ConnectionError:
+        log("🔌 ConnectionError: 无法连接到 JCDecaux API，请检查网络。")
+    except requests.exceptions.HTTPError as http_err:
+        log(f"📡 HTTPError: 接收到错误的响应码：{http_err}")
+    except requests.exceptions.RequestException as req_err:
+        log(f"❗ RequestException: 发生未知请求错误：{req_err}")
+    except Exception as e:
+        log(f"❌ 未知异常: {e}")
+        traceback.print_exc()
+    return []  # 若出错，返回空列表避免主程序崩溃
+
 
 # 获取数据库连接
 def get_db_connection(config):
@@ -109,13 +124,17 @@ def main():
         try:
             log("Starting station data scraping...")
             stations = fetch_stations(API_CONFIG['url'], API_CONFIG['params'])
-            log(f"Successfully fetched {len(stations)} stations.")
-            insert_all_stations(stations, DB_CONFIG)
+            if stations:
+                log(f"Successfully fetched {len(stations)} stations.")
+                insert_all_stations(stations, DB_CONFIG)
+            else:
+                log("⚠️ 未获取到任何站点数据，跳过本轮插入。")
             log("Completed one station data cycle. Sleeping for 10 minutes.")
         except Exception as e:
             log(f"❌ Unexpected error during station data process: {e}")
             traceback.print_exc()
         time.sleep(600)
+
 
 if __name__ == "__main__":
     main()
