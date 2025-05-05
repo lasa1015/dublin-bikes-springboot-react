@@ -6,7 +6,6 @@ import traceback
 from pymysql import Error
 from config import Config
 
-# 数据库配置
 DB_CONFIG = {
     'host': Config.DB_HOST,
     'user': Config.DB_USER,
@@ -15,7 +14,6 @@ DB_CONFIG = {
     'port': Config.DB_PORT
 }
 
-# JCDecaux 自行车站点 API 配置
 API_CONFIG = {
     'url': "https://api.jcdecaux.com/vls/v3/stations",
     'params': {
@@ -24,7 +22,6 @@ API_CONFIG = {
     }
 }
 
-# 日志函数（控制台+文件）
 def log(message):
     timestamp = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
     formatted_message = f"[{timestamp}] {message}"
@@ -32,35 +29,29 @@ def log(message):
     with open("station_data_10mins.log", "a", encoding="utf-8") as f:
         f.write(formatted_message + "\n")
 
-# 获取站点数据
-# 获取站点数据（新增完整异常处理）
-def fetch_stations(api_url, params):
-    try:
-        response = requests.get(api_url, params=params, timeout=10)
-        response.raise_for_status()
-        return response.json()
-    except requests.exceptions.Timeout:
-        log("⏰ TimeoutError: 请求超时，未能获取站点数据。")
-    except requests.exceptions.ConnectionError:
-        log("🔌 ConnectionError: 无法连接到 JCDecaux API，请检查网络。")
-    except requests.exceptions.HTTPError as http_err:
-        log(f"📡 HTTPError: 接收到错误的响应码：{http_err}")
-    except requests.exceptions.RequestException as req_err:
-        log(f"❗ RequestException: 发生未知请求错误：{req_err}")
-    except Exception as e:
-        log(f"❌ 未知异常: {e}")
-        traceback.print_exc()
-    return []  # 若出错，返回空列表避免主程序崩溃
+# 限制 retry 次数和回退
+def fetch_stations(api_url, params, max_retries=3, timeout=10):
+    for attempt in range(1, max_retries + 1):
+        try:
+            response = requests.get(api_url, params=params, timeout=timeout)
+            response.raise_for_status()
+            return response.json()
+        except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as e:
+            log(f"⚠️ [{attempt}/{max_retries}] 网络错误: {e}")
+        except requests.exceptions.HTTPError as http_err:
+            log(f"📡 HTTPError: {http_err}")
+            break
+        except Exception as e:
+            log(f"❗ 其他异常: {e}")
+            traceback.print_exc()
+        time.sleep(5 * attempt)  # 指数退避
+    return []
 
-
-# 获取数据库连接
 def get_db_connection(config):
     return pymysql.connect(**config)
 
-# 插入一条站点数据
 def insert_station(cursor, station):
     total_avail = station.get("totalStands", {}).get("availabilities", {})
-
     insert_query = """
         INSERT INTO bike_data_10min (
             number, status, last_update, connected, overflow, banking, bonus,
@@ -70,36 +61,23 @@ def insert_station(cursor, station):
             recorded_at
         ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, CURRENT_TIMESTAMP)
     """
-
     raw_last_update = station.get("lastUpdate")
     try:
-        if isinstance(raw_last_update, str):
-            last_update = datetime.datetime.fromisoformat(raw_last_update.replace("Z", "+00:00"))
-        else:
-            last_update = datetime.datetime.fromtimestamp(raw_last_update / 1000)
+        last_update = datetime.datetime.fromisoformat(raw_last_update.replace("Z", "+00:00")) \
+            if isinstance(raw_last_update, str) else datetime.datetime.fromtimestamp(raw_last_update / 1000)
     except Exception:
         last_update = None
 
     values = (
-        station.get("number"),
-        station.get("status"),
-        last_update,
-        station.get("connected"),
-        station.get("overflow"),
-        station.get("banking"),
-        station.get("bonus"),
-        station.get("position", {}).get("latitude"),
-        station.get("position", {}).get("longitude"),
-        total_avail.get("bikes"),
-        total_avail.get("stands"),
+        station.get("number"), station.get("status"), last_update,
+        station.get("connected"), station.get("overflow"), station.get("banking"), station.get("bonus"),
+        station.get("position", {}).get("latitude"), station.get("position", {}).get("longitude"),
+        total_avail.get("bikes"), total_avail.get("stands"),
         station.get("totalStands", {}).get("capacity"),
-        total_avail.get("mechanicalBikes"),
-        total_avail.get("electricalBikes")
+        total_avail.get("mechanicalBikes"), total_avail.get("electricalBikes")
     )
-
     cursor.execute(insert_query, values)
 
-# 插入所有站点数据
 def insert_all_stations(stations, db_config):
     connection = None
     try:
@@ -108,9 +86,9 @@ def insert_all_stations(stations, db_config):
             for station in stations:
                 insert_station(cursor, station)
         connection.commit()
-        log("Successfully inserted all station data into database.")
+        log("✅ 成功插入所有站点数据")
     except Error as db_error:
-        log(f"❌ Database error while inserting station data: {db_error}")
+        log(f"❌ 数据库错误: {db_error}")
         traceback.print_exc()
         if connection:
             connection.rollback()
@@ -118,23 +96,21 @@ def insert_all_stations(stations, db_config):
         if connection:
             connection.close()
 
-# 主程序
 def main():
     while True:
         try:
-            log("Starting station data scraping...")
+            log("🚴 开始抓取站点数据…")
             stations = fetch_stations(API_CONFIG['url'], API_CONFIG['params'])
             if stations:
-                log(f"Successfully fetched {len(stations)} stations.")
+                log(f"📦 获取到 {len(stations)} 个站点")
                 insert_all_stations(stations, DB_CONFIG)
             else:
-                log("⚠️ 未获取到任何站点数据，跳过本轮插入。")
-            log("Completed one station data cycle. Sleeping for 10 minutes.")
+                log("⚠️ 获取失败，跳过本轮写库")
         except Exception as e:
-            log(f"❌ Unexpected error during station data process: {e}")
+            log(f"❌ 总体异常: {e}")
             traceback.print_exc()
+        log("⏳ 等待 10 分钟...")
         time.sleep(600)
-
 
 if __name__ == "__main__":
     main()
