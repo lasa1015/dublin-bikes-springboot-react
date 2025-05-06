@@ -25,14 +25,14 @@ The platform adopts a microservices architecture, with separate services for scr
 - **Scrapers**: Python (requests, schedule, dotenv)
 - **Predictor**: Python + Flask  (serving the trained Random Forest model)
 - **Database**: AWS RDS (MySQL)
-- **Deployment & Infrastructure**: Docker, Docker Compose, Nginx, GitHub Actions (CI/CD), AWS EC2 (t4g.small, t3.micro), Namecheap (Domain & DNS)
+- **Deployment & Infrastructure**: Docker, Docker Compose, Watchtower (auto update), Nginx, GitHub Actions (CI/CD), AWS EC2 (t4g.small), Namecheap (Domain & DNS)
 - **Model Training**: Python (scikit-learn Random Forest, Jupyter notebooks / scripts for model training)
 
 ---
 
 ### System Architecture
 
-![image-20250504222149642](docs/images/single-node.png)
+![image-20250506111311455](docs/images/image-20250506111311455.png)
 
 The system adopts a microservices-based architecture, consisting of the following independent services:
 
@@ -41,7 +41,7 @@ The system adopts a microservices-based architecture, consisting of the followin
 - **Predictor Service** (Python + Flask): Hosts the trained Random Forest model and provides real-time prediction endpoints. Considering that the model may be updated frequently, this service is designed as an independent module, implemented with Flask and Python to ensure both model compatibility and flexible maintenance.
 - **Scraper Service** (Python Scripts): Periodically collects historical station and weather data from the JCDecaux and OpenWeatherMap APIs. Designed as an independent service to support machine learning model training, it can be started, stopped, or restarted without impacting other system components.
 
-Each service runs in its own Docker container, orchestrated with Docker Compose for simplified deployment, scaling, and maintenance
+Each service runs in its own Docker container, orchestrated with Docker Compose for simplified deployment, scaling, and maintenance. To support continuous deployment, the host integrates **Watchtower**, which automatically monitors container images, pulls updates when available, and restarts services with minimal downtime.
 
 In addition to the services, the platform relies on a centralized database component:
 
