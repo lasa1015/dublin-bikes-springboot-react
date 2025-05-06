@@ -12,9 +12,9 @@
 
 This project delivers a comprehensive web-based system for monitoring and predicting the availability of Dublin’s public bike-sharing network. It integrates real-time data from bike stations, weather APIs, and air quality APIs, combined with machine learning models to forecast future bike and stand availability.
 
-To support model training, I first collected two months of historical data on bike usage and weather conditions. Live data was continuously collected from the JCDecaux API (for real-time bike station availability) and the OpenWeatherMap API (for current weather and forecasts). After processing and cleaning the collected data, I trained a Random Forest model using scikit-learn.
+To support model training, I first collected two months of historical data on bike usage and weather conditions. Live data was continuously collected from the JCDecaux API (for real-time bike station availability) and the OpenWeatherMap API (for current weather and forecasts). After processing and cleaning the collected data, I trained a Random Forest model using scikit-learn. Subsequently, I developed related functionalities in both the frontend and backend.
 
-The platform adopts a microservices architecture, with decoupled services for scraping, prediction, backend coordination, and frontend presentation. These services are fully containerized with Docker and distributed across two AWS EC2 instances, enabling isolated deployment and independent scaling. Persistent data is stored in an AWS RDS MySQL database, which is securely accessed by all nodes. CI/CD automation is implemented via GitHub Actions to streamline image building and deployment.
+The platform adopts a microservices architecture, with separate services for scraper, predictor, backend and frontend. It is fully containerized with Docker, deployed on AWS EC2, and uses an AWS RDS MySQL database for persistent storage. CI/CD automation is managed via GitHub Actions.
 
 ------
 
@@ -32,35 +32,20 @@ The platform adopts a microservices architecture, with decoupled services for sc
 
 ### System Architecture
 
-![image-20250504222149642](docs/images/image-20250504222149642.png)
+![image-20250504222149642](docs/images/single-node.png)
 
-The system adopts a microservices-based architecture and is deployed across **two EC2 nodes**.  Both EC2 instances are located within the same **Availability Zone**, **VPC**, and **subnet**, ensuring low-latency, high-bandwidth private communication between services. All services are containerized using Docker and orchestrated with Docker Compose. Each node runs an instance of **Watchtower**, which automatically restarts containers when updated images are detected.
+The system adopts a microservices-based architecture, consisting of the following independent services:
 
-##### Node 1 — EC2 `t4g.small`
+- **Frontend Service** (React + Vite): Visualizes live station data, weather information, and prediction results using Google Maps and Google Charts.
+- **Backend Service** (Spring Boot): Periodically collects real-time station and weather data, stores it in the database, and provides RESTful APIs to the frontend. It also retrieves machine learning predictions from the Predictor Service, acting as the central coordinator between different system components.
+- **Predictor Service** (Python + Flask): Hosts the trained Random Forest model and provides real-time prediction endpoints. Considering that the model may be updated frequently, this service is designed as an independent module, implemented with Flask and Python to ensure both model compatibility and flexible maintenance.
+- **Scraper Service** (Python Scripts): Periodically collects historical station and weather data from the JCDecaux and OpenWeatherMap APIs. Designed as an independent service to support machine learning model training, it can be started, stopped, or restarted without impacting other system components.
 
-- **Frontend Service** (React + Vite):  
-  
-  Renders interactive visualizations such as station data, weather info, and prediction results using Google Maps and Charts.
-  
-- **Backend Service** (Spring Boot):  
-  
-  Acts as the system's core orchestrator. It periodically collects real-time station and weather data, stores it in the database, and provides RESTful APIs to the frontend. It also retrieves machine learning predictions from the Predictor Service, acting as the central coordinator between different system components.
+Each service runs in its own Docker container, orchestrated with Docker Compose for simplified deployment, scaling, and maintenance
 
-##### Node 2 — EC2 `t3.micro`
+In addition to the services, the platform relies on a centralized database component:
 
-- **Predictor Service** (Python + Flask):  
-  
-  Hosts the trained Random Forest model and provides real-time prediction endpoints. Considering that the model may be updated frequently, this service is designed as an independent module, implemented with Flask and Python to ensure both model compatibility and flexible maintenance.
-  
-- **Scraper Service** (Python Scripts):  
-  
-  Periodically collects historical station and weather data from the JCDecaux and OpenWeatherMap APIs. Designed as an independent service to support machine learning model training, it can be started, stopped, or restarted without impacting other system components.
-
-##### **Shared Component**
-
-- **AWS RDS (MySQL)**:  
-  
-  A centralized, cloud-hosted relational database that stores all application data. It is securely accessed by services running on both EC2 nodes.
+- **AWS RDS MySQL**: Provides reliable and scalable persistent storage for all application data.
 
 ---
 

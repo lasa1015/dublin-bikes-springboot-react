@@ -12,7 +12,6 @@ def home():
     return "模型服务已就绪"
 
 
-
 @app.route('/predict_batch', methods=['POST'])
 def predict_batch_route():
     try:
