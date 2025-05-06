@@ -20,6 +20,8 @@ import { LeftPanelProvider } from './contexts/LeftPanelContext';
 import MLPredictionPanel from './components/Prediction/MLPredictionPanel';
 import WeatherForecastPanel from './components/Weather/WeatherForecastPanel';
 
+
+
 // App 是整个前端的主组件，负责组合和管理所有子组件
 export default function App() {
   // 通过 useJsApiLoader 异步加载 Google Maps 脚本 
