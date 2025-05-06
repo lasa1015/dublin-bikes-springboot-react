@@ -8,7 +8,7 @@ logs/
 venv/
 dist/
 *.iodraw
-
+README - multinode.md
 
 __pycache__/
 *.py[cod]

@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+
 // @EnableScheduling 会让 Spring Boot 扫描并启用所有带有 @Scheduled 注解的方法。
 // @EnableScheduling 本质上是一个开关，它做了两件事：
 // 开启了定时任务调度线程池; 去 Spring 容器中找所有带有 @Scheduled 注解的方法，并注册调度任务
@@ -37,7 +38,6 @@ public class DbbikesApplication {
 			// 从.env中获取 jcdecaux 的 api
 			System.setProperty("jcdecaux.api.key", dotenv.get("JCDECAUX_API_KEY"));
 		}
-
 
 		// 启动 Spring Boot 应用的标准入口，会初始化 Spring 容器、执行自动配置、启动 Web 服务、加载 Bean 等，是整个项目“动起来”的核心命令。
 		// args 接收你在启动时传入的命令行参数，例如：java -jar app.jar --server.port=8085

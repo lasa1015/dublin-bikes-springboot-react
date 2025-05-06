@@ -36,7 +36,7 @@ jobs:
           context: ./backend
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/dbbikes-backend:latest
-          platforms: linux/amd64
+          platforms: linux/arm64
 
 
       - name: Build and push frontend image
@@ -45,7 +45,7 @@ jobs:
           context: ./frontend
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/dbbikes-frontend:latest
-          platforms: linux/amd64
+          platforms: linux/arm64
           build-args: |
             VITE_GOOGLE_MAPS_API_KEY=${{ secrets.VITE_GOOGLE_MAPS_API_KEY }} 
       
@@ -56,7 +56,7 @@ jobs:
           context: ./predictor
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/dbbikes-predictor:latest
-          platforms: linux/amd64
+          platforms: linux/arm64
 
 
 
@@ -66,4 +66,4 @@ jobs:
           context: ./scraper
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/dbbikes-scraper:latest
-          platforms: linux/amd64
+          platforms: linux/arm64
