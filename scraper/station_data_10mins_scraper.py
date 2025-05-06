@@ -96,6 +96,8 @@ def insert_all_stations(stations, db_config):
         if connection:
             connection.close()
 
+
+
 def main():
     while True:
         try:

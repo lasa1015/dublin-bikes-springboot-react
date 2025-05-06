@@ -20,6 +20,8 @@ import java.time.LocalDateTime;
 @Component
 public class CurrentAirQualityScheduler {
 
+
+
     private static final Logger logger = LoggerFactory.getLogger(CurrentAirQualityScheduler.class);
 
     private final AirQualityRepository airQualityRepository;

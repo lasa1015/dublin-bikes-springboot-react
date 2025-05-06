@@ -5,6 +5,8 @@ from predictor import predict_batch
 
 app = Flask(__name__)
 
+
+
 @app.route('/')
 def home():
     return "模型服务已就绪"
